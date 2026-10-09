@@ -1,0 +1,17 @@
+export const FOOD_PILLS = [
+  { label: "Steak", emoji: "🥩" },
+  { label: "Fried chicken", emoji: "🍗" },
+  { label: "Ramen", emoji: "🍜" },
+  { label: "Pizza", emoji: "🍕" },
+  { label: "Burger", emoji: "🍔" },
+  { label: "Sushi", emoji: "🍣" },
+  { label: "Korean BBQ", emoji: "🥓" },
+  { label: "Pasta", emoji: "🍝" },
+  { label: "Tacos", emoji: "🌮" },
+  { label: "Seafood", emoji: "🦐" },
+  { label: "Dimsum", emoji: "🥟" },
+  { label: "Curry", emoji: "🍛" },
+  { label: "Salad", emoji: "🥗" },
+  { label: "Dessert", emoji: "🍰" },
+  { label: "Coffee", emoji: "☕" },
+];
