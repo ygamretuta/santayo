@@ -7,6 +7,9 @@
 }
 
 .results-page__logo {
+  display: inline-flex;
+  height: var(--control-height);
+  align-items: center;
   font-size: 20px;
   font-weight: 700;
   color: var(--color-accent-text);
@@ -31,6 +34,7 @@
 @media (min-width: 640px) {
   .results-page__header {
     flex-wrap: nowrap;
+    align-items: flex-start;
   }
 
   .results-page__search {
