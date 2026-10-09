@@ -64,7 +64,6 @@ function mapPlace(p: any, origin?: { lat: number; lng: number }): Restaurant {
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 const SEARCH_FIELDS = [
-  "nextPageToken",
   "places.id",
   "places.displayName",
   "places.rating",
@@ -99,15 +98,12 @@ const DETAIL_FIELDS = [
   "reviews",
 ].join(",");
 
-/** Google returns 20 per request; we pull up to this many requests per search. */
-const MAX_SEARCH_PAGES = 2;
-
-async function searchPage(
+/** One request per search (Google caps text search at 20 places per request). */
+export async function googleSearch(
   query: string,
   origin: { lat: number; lng: number },
   radiusKm: number,
-  pageToken?: string,
-) {
+): Promise<Restaurant[]> {
   const res = await fetch(`${BASE}/places:searchText`, {
     method: "POST",
     headers: {
@@ -120,7 +116,6 @@ async function searchPage(
       includedType: "restaurant",
       strictTypeFiltering: true,
       pageSize: 20,
-      pageToken,
       languageCode: "en",
       // Text search only restricts to rectangles; we trim to the circle below.
       locationRestriction: { rectangle: boundingBox(origin, radiusKm) },
@@ -128,32 +123,10 @@ async function searchPage(
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`Places search failed (${res.status})`);
-  return (await res.json()) as { places?: unknown[]; nextPageToken?: string };
-}
+  const data = await res.json();
 
-export async function googleSearch(
-  query: string,
-  origin: { lat: number; lng: number },
-  radiusKm: number,
-): Promise<Restaurant[]> {
-  const places: unknown[] = [];
-  let token: string | undefined;
-
-  for (let i = 0; i < MAX_SEARCH_PAGES; i++) {
-    try {
-      const data = await searchPage(query, origin, radiusKm, token);
-      places.push(...(data.places ?? []));
-      token = data.nextPageToken;
-    } catch (err) {
-      // Losing a later page is fine; losing the first is a real failure.
-      if (i === 0) throw err;
-      break;
-    }
-    if (!token) break;
-  }
-
-  return places
-    .map((p) => mapPlace(p, origin))
+  return (data.places ?? [])
+    .map((p: unknown) => mapPlace(p, origin))
     .filter((r: Restaurant) => r.distanceKm == null || r.distanceKm <= radiusKm);
 }
 
