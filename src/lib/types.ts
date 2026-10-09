@@ -34,6 +34,8 @@ export interface Restaurant {
   lat?: number;
   lng?: number;
   distanceKm?: number;
+  /** Other branches of the same chain hidden from search results. */
+  otherBranches?: number;
   openNow?: boolean;
   hours?: string[];
   phone?: string;

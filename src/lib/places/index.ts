@@ -1,5 +1,6 @@
 import { cache } from "react";
 import type { Restaurant, SearchResult } from "../types";
+import { dedupeRestaurants } from "../dedupe";
 import { demoRestaurant, demoSearch, isDemoId } from "./demo";
 import { googleDetails, googleKey, googleSearch } from "./google";
 
@@ -11,7 +12,7 @@ export async function searchRestaurants(
   radiusKm: number,
 ): Promise<SearchResult> {
   if (usingGoogle()) {
-    return { source: "google", restaurants: await googleSearch(query, origin, radiusKm) };
+    return { source: "google", restaurants: dedupeRestaurants(await googleSearch(query, origin, radiusKm)) };
   }
   return { source: "demo", restaurants: demoSearch(query, origin, radiusKm) };
 }

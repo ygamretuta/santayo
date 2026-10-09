@@ -203,7 +203,7 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
           )}
         </Status>
       ) : (
-        <ul className="grid gap-3 md:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {sorted.map((r) => (
             <RestaurantCard key={r.id} r={r} />
           ))}
