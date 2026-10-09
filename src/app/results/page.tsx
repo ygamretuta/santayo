@@ -6,7 +6,7 @@ import { SearchBox } from "@/components/SearchBox";
 import { ResultsView } from "@/components/ResultsView";
 import "./results-page.css";
 
-type SearchParams = Promise<{ q?: string | string[]; r?: string | string[] }>;
+type SearchParams = Promise<{ q?: string | string[]; r?: string | string[]; page?: string | string[] }>;
 
 const first = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v) ?? "";
 
@@ -28,6 +28,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
   const q = first(sp.q).trim().slice(0, 60);
   if (!q) redirect("/");
   const radius = first(sp.r) === "10" ? 10 : 5;
+  const page = Math.max(1, parseInt(first(sp.page), 10) || 1);
 
   return (
     <main className="page">
@@ -42,7 +43,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
       <h1 className="results-page__title">
         <span className="results-page__term">{q}</span> near you
       </h1>
-      <ResultsView q={q} radius={radius} />
+      <ResultsView q={q} radius={radius} page={page} />
     </main>
   );
 }

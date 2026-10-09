@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { DataSource, Restaurant } from "@/lib/types";
+import { paginate } from "@/lib/paginate";
+import { Pagination } from "./Pagination";
 import { RestaurantCard } from "./RestaurantCard";
 import "./results-view.css";
 
@@ -70,7 +73,8 @@ type Loaded =
   | { key: string; restaurants: Restaurant[]; source: DataSource }
   | { key: string; error: string };
 
-export function ResultsView({ q, radius }: { q: string; radius: number }) {
+export function ResultsView({ q, radius, page }: { q: string; radius: number; page: number }) {
+  const router = useRouter();
   const raw = useSyncExternalStore(subscribe, readRaw, () => null);
   const coords = useMemo<Coords | null>(() => {
     try {
@@ -125,6 +129,10 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
     [current, sort],
   );
 
+  const pageData = useMemo(() => paginate(sorted, page), [sorted, page]);
+  const hrefFor = (n: number) =>
+    `/results?q=${encodeURIComponent(q)}&r=${radius}${n > 1 ? `&page=${n}` : ""}`;
+
   if (!coords) {
     return denied ? <LocationFallback /> : <Status>📍 Finding where you are…</Status>;
   }
@@ -167,7 +175,10 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
           Sort
           <select
             value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
+            onChange={(e) => {
+              setSort(e.target.value as Sort);
+              if (page > 1) router.replace(hrefFor(1));
+            }}
             className="results-view__select"
           >
             {SORTS.map((s) => (
@@ -200,13 +211,16 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
           )}
         </Status>
       ) : (
-        <ul className="restaurant-list">
-          {sorted.map((r) => (
-            <li key={r.id} className="restaurant-list__item">
-              <RestaurantCard r={r} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="restaurant-list">
+            {pageData.items.map((r) => (
+              <li key={r.id} className="restaurant-list__item">
+                <RestaurantCard r={r} />
+              </li>
+            ))}
+          </ul>
+          <Pagination page={pageData} hrefFor={hrefFor} />
+        </>
       )}
     </div>
   );
