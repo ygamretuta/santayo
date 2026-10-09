@@ -1,0 +1,28 @@
+.home__emoji {
+  font-size: 48px;
+  line-height: var(--space-7);
+}
+
+.home__title {
+  margin-top: var(--space-2);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: var(--space-6);
+}
+
+.home__accent {
+  color: var(--color-accent-text);
+}
+
+.home__lead {
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+}
+
+@media (min-width: 640px) {
+  .home__title {
+    font-size: 48px;
+    line-height: var(--space-7);
+  }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { DataSource, Restaurant } from "@/lib/types";
 import { RestaurantCard } from "./RestaurantCard";
+import "./results-view.css";
 
 interface Coords {
   lat: number;
@@ -130,9 +131,9 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-stone-500">
+      <div className="results-view__toolbar">
+        <div className="results-view__filters">
+          <span className="results-view__label">
             {coords.label ? `Near ${coords.label}` : "Near you"} · within
           </span>
           {[5, 10].map((km) => (
@@ -141,11 +142,7 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
               href={`/results?q=${encodeURIComponent(q)}&r=${km}`}
               replace
               aria-current={km === radius}
-              className={`rounded-full border px-3 py-1 font-medium ${
-                km === radius
-                  ? "border-orange-500 bg-orange-500 text-white"
-                  : "border-stone-300 hover:border-orange-400 dark:border-stone-700"
-              }`}
+              className={`results-view__chip ${km === radius ? "results-view__chip--active" : ""}`}
             >
               {km} km
             </Link>
@@ -160,21 +157,21 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
               setDenied(false);
               listeners.forEach((l) => l());
             }}
-            className="text-stone-500 underline-offset-2 hover:underline"
+            className="results-view__link-button"
           >
             change location
           </button>
         </div>
 
-        <label className="flex items-center gap-2 text-sm text-stone-500">
+        <label className="results-view__sort">
           Sort
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
-            className="rounded-lg border border-stone-300 bg-transparent px-2 py-1 text-stone-900 dark:border-stone-700 dark:text-stone-100"
+            className="results-view__select"
           >
             {SORTS.map((s) => (
-              <option key={s.id} value={s.id} className="text-stone-900">
+              <option key={s.id} value={s.id} className="results-view__option">
                 {s.label}
               </option>
             ))}
@@ -183,7 +180,7 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
       </div>
 
       {current && "source" in current && current.source === "demo" && (
-        <p className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100">
+        <p className="results-view__notice">
           <strong>Demo data.</strong> These are placeholder restaurants. Add a{" "}
           <code>GOOGLE_MAPS_API_KEY</code> to see real places, photos and reviews.
         </p>
@@ -197,15 +194,17 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
         <Status>
           No {q} spots within {radius} km.{" "}
           {radius < 10 && (
-            <Link href={`/results?q=${encodeURIComponent(q)}&r=10`} replace className="text-orange-600 underline">
+            <Link href={`/results?q=${encodeURIComponent(q)}&r=10`} replace className="results-view__retry">
               Try 10 km
             </Link>
           )}
         </Status>
       ) : (
-        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <ul className="restaurant-list">
           {sorted.map((r) => (
-            <RestaurantCard key={r.id} r={r} />
+            <li key={r.id} className="restaurant-list__item">
+              <RestaurantCard r={r} />
+            </li>
           ))}
         </ul>
       )}
@@ -215,7 +214,7 @@ export function ResultsView({ q, radius }: { q: string; radius: number }) {
 
 function Status({ children }: { children: React.ReactNode }) {
   return (
-    <p role="status" className="py-16 text-center text-stone-500">
+    <p role="status" className="status">
       {children}
     </p>
   );
@@ -244,27 +243,24 @@ function LocationFallback() {
   }
 
   return (
-    <div className="mx-auto max-w-md py-12 text-center">
-      <p className="text-lg font-semibold">We couldn’t get your location</p>
-      <p className="mt-1 text-sm text-stone-500">
+    <div className="location-fallback">
+      <p className="location-fallback__title">We couldn’t get your location</p>
+      <p className="location-fallback__text">
         Allow location access in your browser, or tell us where to look.
       </p>
-      <form onSubmit={lookup} className="mt-5 flex gap-2">
+      <form onSubmit={lookup} className="location-fallback__form">
         <input
           value={place}
           onChange={(e) => setPlace(e.target.value)}
           placeholder="City or area, e.g. Makati"
           aria-label="City or area"
-          className="min-w-0 flex-1 rounded-xl border border-stone-300 bg-transparent px-4 py-2.5 dark:border-stone-700"
+          className="location-fallback__input"
         />
-        <button
-          disabled={busy}
-          className="rounded-xl bg-orange-500 px-4 py-2.5 font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
-        >
+        <button disabled={busy} className="button location-fallback__button">
           {busy ? "…" : "Search"}
         </button>
       </form>
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="location-fallback__error">{error}</p>}
     </div>
   );
 }

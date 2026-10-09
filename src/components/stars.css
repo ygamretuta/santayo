@@ -1,0 +1,51 @@
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.stars__icons {
+  position: relative;
+  display: inline-flex;
+}
+
+.stars__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.stars__row {
+  display: flex;
+}
+
+.stars__row--empty {
+  color: var(--color-star-empty);
+}
+
+.stars__row--filled {
+  color: var(--color-star);
+}
+
+.stars__icon {
+  width: var(--space-2);
+  height: var(--space-2);
+  flex-shrink: 0;
+}
+
+.stars__value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.stars--lg .stars__value {
+  font-size: 20px;
+}
+
+.stars__count,
+.stars__empty {
+  color: var(--color-muted);
+  font-size: 14px;
+}

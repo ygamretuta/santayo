@@ -1,33 +1,225 @@
-@import "tailwindcss";
+/*
+ * Design tokens, base styles and the shared blocks (page, status, button).
+ *
+ * Naming: BEM (block__element--modifier).
+ * Spacing: every layout measurement is a multiple of 8px, taken from the
+ * --space-* / --radius-* scales below. Exceptions: 1px hairline borders, and
+ * the 4px focus ring. Type sizes are not on the grid, but line-heights are.
+ * Run `pnpm lint:grid` to check.
+ */
 
 :root {
-  --background: #fafaf9;
-  --foreground: #171717;
-}
+  /* 8pt spacing scale */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-12: 96px;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --radius-1: 8px;
+  --radius-2: 16px;
+  --radius-pill: 800px;
+
+  --control-height: var(--space-5);
+  --control-height-sm: var(--space-4);
+  --control-height-lg: var(--space-7);
+
+  --color-bg: #fafaf9;
+  --color-surface: #ffffff;
+  --color-text: #1c1917;
+  --color-text-soft: #44403c;
+  --color-muted: #78716c;
+  --color-border: #e7e5e4;
+  --color-border-strong: #d6d3d1;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-accent-text: #ea580c;
+  --color-accent-soft: #fff7ed;
+  --color-accent-edge: #fb923c;
+  --color-focus: rgb(249 115 22 / 0.3);
+  --color-star: #f59e0b;
+  --color-star-empty: #d6d3d1;
+  --color-ok: #16a34a;
+  --color-bad: #dc2626;
+  --color-notice-bg: #fffbeb;
+  --color-notice-border: #fcd34d;
+  --color-notice-text: #78350f;
+  --color-photo-from: #fed7aa;
+  --color-photo-to: #fef3c7;
+  --color-dark-tile: #1c1917;
+  --color-dark-tile-hover: #000000;
+  --color-hover: #f5f5f4;
+
+  --shadow-sm: 0 8px 16px -8px rgb(0 0 0 / 0.15);
+  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.25);
+  --focus-ring: 0 0 0 4px var(--color-focus);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0c0a09;
-    --foreground: #ededed;
+    --color-bg: #0c0a09;
+    --color-surface: #1c1917;
+    --color-text: #ededed;
+    --color-text-soft: #d6d3d1;
+    --color-muted: #a8a29e;
+    --color-border: #292524;
+    --color-border-strong: #44403c;
+    --color-accent-soft: #292524;
+    --color-focus: rgb(249 115 22 / 0.4);
+    --color-star-empty: #44403c;
+    --color-notice-bg: #451a03;
+    --color-notice-border: #b45309;
+    --color-notice-text: #fef3c7;
+    --color-photo-from: #431407;
+    --color-photo-to: #292524;
+    --color-dark-tile: #292524;
+    --color-dark-tile-hover: #44403c;
+    --color-hover: #292524;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+/* Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.no-scrollbar {
-  scrollbar-width: none;
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+
+body {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: var(--space-3);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+/* page: top-level <main> wrapper */
+.page {
+  width: 100%;
+  max-width: 1024px;
+  flex: 1;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2);
+}
+
+.page--home {
+  display: flex;
+  max-width: 672px;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-8);
+  text-align: center;
+}
+
+.page--detail {
+  max-width: 896px;
+  padding-block: var(--space-2);
+}
+
+.page--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding-block: var(--space-12);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding-inline: var(--space-3);
+  }
+}
+
+/* status: loading / empty / error message */
+.status {
+  padding: var(--space-8) 0;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* button: accent pill; --lg for hero forms */
+.button {
+  display: inline-flex;
+  height: var(--control-height);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.button:hover {
+  background: var(--color-accent-hover);
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
+
+.button--lg {
+  height: var(--control-height-lg);
+  box-shadow: var(--shadow-sm);
 }

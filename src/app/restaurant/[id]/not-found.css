@@ -1,0 +1,10 @@
+.not-found__emoji {
+  font-size: 48px;
+  line-height: var(--space-7);
+}
+
+.not-found__title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: var(--space-4);
+}

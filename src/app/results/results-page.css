@@ -1,0 +1,39 @@
+.results-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.results-page__logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent-text);
+}
+
+.results-page__search {
+  min-width: 0;
+  flex: 1 1 100%;
+}
+
+.results-page__title {
+  margin-bottom: var(--space-2);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: var(--space-4);
+}
+
+.results-page__term {
+  text-transform: capitalize;
+}
+
+@media (min-width: 640px) {
+  .results-page__header {
+    flex-wrap: nowrap;
+  }
+
+  .results-page__search {
+    flex-basis: 0;
+  }
+}

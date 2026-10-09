@@ -1,0 +1,17 @@
+.back-button {
+  display: inline-flex;
+  height: var(--control-height-sm);
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-soft);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.back-button:hover {
+  background: var(--color-hover);
+}

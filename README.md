@@ -2,7 +2,7 @@
 
 Tell it what you're craving (type it, or tap a pill like *Steak* or *Fried chicken*) and get restaurants within 5 or 10 km: thumbnail, star rating and average price per person. Tap one for details, reviews and TikTok review searches.
 
-**Stack:** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · Tailwind 4 · Vercel
+**Stack:** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · plain CSS (BEM) · Vercel
 
 ## Run it
 
@@ -24,6 +24,12 @@ Average price comes from Google's `priceRange` (midpoint); when a place only has
 - Location comes from the browser and is kept in `sessionStorage` (never in the URL); coordinates are rounded to ~110 m before being sent. If permission is denied, you can search by city/area (Open-Meteo geocoding).
 - TikTok has no public search/embed API, so the detail page links out to TikTok searches for the restaurant (plus YouTube/Instagram/Facebook/Reddit).
 
+## Styling
+
+- **BEM** (`block__element--modifier`). Each component owns one stylesheet named after its block, imported by the component (e.g. `search-box.css` for `SearchBox`). Shared tokens, base styles and the `page`, `status` and `button` blocks live in `src/app/globals.css`.
+- **8pt grid.** Every spacing, size and radius is a multiple of 8 px, taken from the `--space-*`, `--radius-*` and `--control-height*` tokens. Allowed exceptions: 1 px hairline borders and the 4 px focus ring. Type sizes are not on the grid, but line-heights are. `pnpm lint:grid` enforces this.
+- Grid columns that can hold truncated text must use `minmax(0, 1fr)`, otherwise long names widen the page on phones.
+
 ## Scripts
 
-`pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm test`
+`pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm lint:grid` · `pnpm test`

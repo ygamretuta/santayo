@@ -1,0 +1,105 @@
+.search-box__form {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.search-box--hero .search-box__form {
+  margin-top: var(--space-4);
+}
+
+.search-box__input {
+  height: var(--control-height);
+  min-width: 0;
+  flex: 1;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  outline: none;
+}
+
+.search-box__input:focus {
+  border-color: var(--color-accent);
+  box-shadow: var(--focus-ring);
+}
+
+.search-box--hero .search-box__input {
+  height: var(--control-height-lg);
+  padding: 0 var(--space-3);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-box--hero .search-box__input:focus {
+  box-shadow: var(--focus-ring);
+}
+
+.search-box__hint {
+  margin-top: var(--space-4);
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.search-box__pills {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.search-box--hero .search-box__pills {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+.search-box--compact .search-box__pills {
+  margin: var(--space-2) calc(var(--space-2) * -1) 0;
+  padding: 0 var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.search-box--compact .search-box__pills::-webkit-scrollbar {
+  display: none;
+}
+
+.search-box__pill-item {
+  flex-shrink: 0;
+}
+
+.search-box__pill {
+  display: inline-flex;
+  height: var(--control-height-sm);
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.search-box--hero .search-box__pill {
+  height: var(--control-height);
+}
+
+.search-box__pill:hover {
+  border-color: var(--color-accent-edge);
+  background: var(--color-accent-soft);
+}
+
+.search-box__pill--active,
+.search-box__pill--active:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+@media (min-width: 640px) {
+  .search-box--compact .search-box__pills {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
