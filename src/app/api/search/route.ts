@@ -1,9 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { searchRestaurants } from "@/lib/places";
+import { guard } from "@/lib/guard";
 
 const MAX_RADIUS_KM = 10;
 
 export async function GET(request: NextRequest) {
+  const blocked = await guard(request, "search", 20);
+  if (blocked) return blocked;
   const p = request.nextUrl.searchParams;
   const q = (p.get("q") ?? "").trim().slice(0, 60);
   const lat = Number(p.get("lat"));

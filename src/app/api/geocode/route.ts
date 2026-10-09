@@ -1,7 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { guard } from "@/lib/guard";
 
 /** Fallback for people who decline location access: look up a city/area by name. */
 export async function GET(request: NextRequest) {
+  const blocked = await guard(request, "geocode", 10);
+  if (blocked) return blocked;
   const q = (request.nextUrl.searchParams.get("q") ?? "").trim().slice(0, 80);
   if (!q) return NextResponse.json({ error: "Missing query" }, { status: 400 });
 

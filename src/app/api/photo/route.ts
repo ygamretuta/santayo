@@ -1,10 +1,13 @@
 import { type NextRequest } from "next/server";
 import { googleKey, googlePhoto } from "@/lib/places/google";
+import { guard } from "@/lib/guard";
 
 // Only proxy real place-photo resource names so the key can't be used for anything else.
 const PHOTO_NAME = /^places\/[\w-]+\/photos\/[\w-]+$/;
 
 export async function GET(request: NextRequest) {
+  const blocked = await guard(request, "photo", 200);
+  if (blocked) return blocked;
   const name = request.nextUrl.searchParams.get("name") ?? "";
   const w = Math.min(Math.max(Number(request.nextUrl.searchParams.get("w")) || 480, 64), 1600);
 
