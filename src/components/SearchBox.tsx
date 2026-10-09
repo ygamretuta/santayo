@@ -29,7 +29,7 @@ export function SearchBox({ initial = "", variant }: Props) {
       className={
         hero
           ? "mt-3 flex flex-wrap justify-center gap-2"
-          : "no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
+          : "no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
       }
     >
       {FOOD_PILLS.map((f) => (
