@@ -202,14 +202,6 @@ code {
   padding: var(--space-3) var(--space-2);
 }
 
-/* hero: full-bleed paprika background around the home page content */
-.hero {
-  display: flex;
-  flex: 1;
-  background: var(--color-brand);
-  color: var(--color-on-brand);
-}
-
 .page--home {
   display: flex;
   max-width: 672px;

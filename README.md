@@ -52,12 +52,12 @@ A triad of equal saturation, with tints and shades of each hue for the supportin
 
 | Share | Hue | Used for |
 | --- | --- | --- |
-| 60% | Paprika `#d94f30` (rendered `#cd492b`, see below) | hero, header band, pale paprika page canvas |
+| 60% | Paprika `#d94f30` (rendered `#cd492b`, see below) | header band on every page, pale paprika page canvas |
 | 30% | Green `#30d94f` | mint cards and panels, selected pills/chips/pages |
 | 10% | Violet `#4f30d9` | buttons, links, prices, facts card, TikTok tiles, focus |
 
 - **Contrast:** white on `#d94f30` is 4.1:1, just under the 4.5:1 AA minimum for small text, so paprika renders as `#cd492b` (4.6:1). Set `--paprika` back to `#d94f30` for the exact hex. Green is never used behind white text; it takes dark ink (`#0b2e13`, 7.9:1).
-- **Measured split** (pixel sampling of rendered pages, brand hues only): home 88/12/1, results 60/35/5, detail 65/17/17; roughly 71/21/8 averaged. Accent hues rarely reach a literal 10% of area without overwhelming the page.
+- **Measured split** (pixel sampling of rendered pages, brand hues only): results 60/35/5 and detail 65/17/17 (the home page has since moved from a full red background to the cream canvas, so it is no longer 88/12/1). Accent hues rarely reach a literal 10% of area without overwhelming the page.
 
 ## Styling
 

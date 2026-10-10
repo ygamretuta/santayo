@@ -1,9 +1,14 @@
 import { SearchBox } from "@/components/search/SearchBox";
+import { Logo } from "@/components/ui/Logo";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 import "./home.css";
 
 export default function Home() {
   return (
-    <div className="hero">
+    <>
+      <SiteHeader>
+        <Logo />
+      </SiteHeader>
       <main className="page page--home">
         <p className="home__emoji" aria-hidden>
           🍽️
@@ -17,6 +22,6 @@ export default function Home() {
 
         <SearchBox variant="hero" />
       </main>
-    </div>
+    </>
   );
 }

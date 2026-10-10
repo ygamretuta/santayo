@@ -1,4 +1,4 @@
-/* search-box: lives on the paprika hero / header band, so fields are white */
+/* search-box: white fields; the compact variant sits on the paprika header band */
 .search-box__form {
   display: flex;
   gap: var(--space-1);
@@ -28,9 +28,17 @@
   box-shadow: var(--focus-ring-on-brand);
 }
 
+/* Home: the field sits on the cream canvas, so it gets a border, shadow and violet focus */
 .search-box--hero .search-box__input {
   height: var(--control-height-lg);
   padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-box--hero .search-box__input:focus {
+  border-color: var(--color-accent);
+  box-shadow: var(--focus-ring);
 }
 
 /* Home: the pills sit on a mint card (the 30% green) so the hero isn't all red */
