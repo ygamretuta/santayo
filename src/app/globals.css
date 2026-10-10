@@ -9,6 +9,9 @@
  */
 
 :root {
+  /* Native controls (dropdown list, scrollbars) follow the OS light/dark setting. */
+  color-scheme: light dark;
+
   /* 8pt spacing scale */
   --space-1: 8px;
   --space-2: 16px;
@@ -79,6 +82,13 @@
   --color-border-strong: #f0c9b3;
   --color-hover: #f9e1d2;
 
+  /* Control outlines (pills, chips, dropdown, pagination). Light mode keeps the
+     soft tints; dark mode overrides them with outlines that stay visible. */
+  --color-control-border: var(--color-border-strong);
+  --color-pill-border: transparent;
+  --color-pill-border-picker: var(--color-border);
+  --color-pill-fill-picker: var(--color-field);
+
   /* Semantic */
   --color-star: #f59e0b;
   --color-star-empty: #e9d4cc;
@@ -120,6 +130,10 @@
     --color-field: #1a0e09;
     --color-border-strong: #5a3320;
     --color-hover: #3a2116;
+    --color-control-border: #5b8aab;
+    --color-pill-border: #8a6f62;
+    --color-pill-border-picker: #5b8aab;
+    --color-pill-fill-picker: #17354a;
     --color-star-empty: #4a3029;
     --color-ok: #4ade6a;
     --color-bad: #ff7a6b;
@@ -261,7 +275,7 @@ code {
 }
 
 .button--secondary {
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-control-border);
   background: transparent;
   color: var(--color-text);
 }

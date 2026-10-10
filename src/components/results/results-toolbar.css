@@ -28,7 +28,7 @@
   height: var(--control-height-sm);
   align-items: center;
   padding: 0 var(--space-2);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-control-border);
   border-radius: var(--radius-pill);
   font-weight: 500;
 }
@@ -66,11 +66,12 @@
 .results-toolbar__select {
   height: var(--control-height-sm);
   padding: 0 var(--space-1);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-control-border);
   border-radius: var(--radius-1);
   background: transparent;
 }
 
 .results-toolbar__option {
-  color: #1c1917;
+  background: var(--color-field);
+  color: var(--color-text);
 }
