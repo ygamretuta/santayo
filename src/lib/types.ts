@@ -50,3 +50,12 @@ export interface SearchResult {
   source: DataSource;
   restaurants: Restaurant[];
 }
+
+export type MenuKind = "pdf" | "image" | "page";
+
+export interface Menu {
+  url: string;
+  kind: MenuKind;
+  /** False when the target forbids framing, so we can only link out to it. */
+  embeddable: boolean;
+}

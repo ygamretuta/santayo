@@ -212,6 +212,17 @@ code {
   opacity: 0.6;
 }
 
+.button--secondary {
+  border: 1px solid var(--color-border-strong);
+  background: transparent;
+  color: var(--color-text);
+}
+
+.button--secondary:hover {
+  border-color: var(--color-accent-edge);
+  background: var(--color-accent-soft);
+}
+
 .button--lg {
   height: var(--control-height-lg);
   box-shadow: var(--shadow-sm);

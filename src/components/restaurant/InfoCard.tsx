@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import type { Restaurant } from "@/lib/types";
+import { MenuLink } from "./MenuLink";
 import "./info-card.css";
 
 /** Address, phone, website, maps link and opening hours. */
@@ -21,13 +23,17 @@ export function InfoCard({ r }: { r: Restaurant }) {
             </a>
           </p>
         )}
-        {r.mapsUrl && (
-          <div>
+        <div className="info-card__actions">
+          {r.mapsUrl && (
             <a href={r.mapsUrl} target="_blank" rel="noopener noreferrer" className="button">
               Open in Maps
             </a>
-          </div>
-        )}
+          )}
+          {/* Menu lookup hits the restaurant's website, so it streams in after the page. */}
+          <Suspense fallback={null}>
+            <MenuLink website={r.website} name={r.name} />
+          </Suspense>
+        </div>
       </div>
       {r.hours && (
         <div className="info-card__column">

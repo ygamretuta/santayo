@@ -1,0 +1,116 @@
+.menu-dialog {
+  width: calc(100% - var(--space-4));
+  max-width: 896px;
+  height: calc(100dvh - var(--space-8));
+  max-height: 960px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.menu-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* Keep the page behind the dialog from scrolling. */
+body:has(.menu-dialog[open]) {
+  overflow: hidden;
+}
+
+.menu-dialog__header {
+  display: flex;
+  height: var(--space-8);
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.menu-dialog__title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-dialog__external {
+  flex-shrink: 0;
+  color: var(--color-accent-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.menu-dialog__external:hover {
+  text-decoration: underline;
+}
+
+.menu-dialog__close {
+  display: inline-flex;
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+}
+
+.menu-dialog__close:hover {
+  background: var(--color-hover);
+}
+
+.menu-dialog__body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  background: var(--color-bg);
+}
+
+.menu-dialog__frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #ffffff;
+}
+
+.menu-dialog__scroll {
+  width: 100%;
+  overflow: auto;
+  padding: var(--space-2);
+}
+
+.menu-dialog__image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-1);
+}
+
+.menu-dialog__fallback {
+  display: flex;
+  max-width: 448px;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: auto;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .menu-dialog__header {
+    padding: 0 var(--space-3);
+  }
+}

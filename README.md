@@ -19,6 +19,10 @@ pnpm dev
 
 Average price comes from Google's `priceRange` (midpoint); when a place only has a coarse price level it shows `$`–`$$$$` instead.
 
+## Menus
+
+Google's Places API has no menu data, so `lib/menu.ts` looks for one on the restaurant's own website (a "Menu" link, a `/menu` page, or a menu PDF/image). The detail page shows **View menu** only when one is found, and opens it in a dialog. Sites that forbid framing get an "Open menu" link inside the dialog instead. Coverage depends on the restaurant having a real website: places with no website, or only a Facebook/Instagram page, get no menu button. Fetching is server-side, time-boxed, restricted to public http(s) hosts, and results are cached for a day.
+
 ## Notes
 
 - Location comes from the browser and is kept in `sessionStorage` (never in the URL); coordinates are rounded to ~110 m before being sent. If permission is denied, you can search by city/area (Open-Meteo geocoding).
