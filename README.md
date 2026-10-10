@@ -48,16 +48,16 @@ Each component sits next to its BEM stylesheet, and tests sit next to the code t
 
 ## Palette (60-30-10)
 
-A triad of equal saturation, with tints and shades of each hue for the supporting detail. All tokens live in `src/app/globals.css`, with a warm-dark variant under `prefers-color-scheme: dark`.
+A scheme of three blues-and-orange hues, with tints and shades of each for the supporting detail. All tokens live in `src/app/globals.css`, with a warm-dark variant under `prefers-color-scheme: dark`.
 
 | Share | Hue | Used for |
 | --- | --- | --- |
-| 60% | Paprika `#d94f30` (rendered `#cd492b`, see below) | header band on every page, pale paprika page canvas |
-| 30% | Green `#30d94f` | mint cards and panels, selected pills/chips/pages |
-| 10% | Violet `#4f30d9` | buttons, links, prices, facts card, TikTok tiles, focus |
+| 60% | Orange `#d7733f` | header band on every page, warm cream page canvas |
+| 30% | Sky blue `#72bbe2` | pale-blue cards and panels, selected pills/chips/pages |
+| 10% | Blue `#2789bd` | buttons, links, prices, TikTok tiles, focus |
 
-- **Contrast:** white on `#d94f30` is 4.1:1, just under the 4.5:1 AA minimum for small text, so paprika renders as `#cd492b` (4.6:1). Set `--paprika` back to `#d94f30` for the exact hex. Green is never used behind white text; it takes dark ink (`#0b2e13`, 7.9:1).
-- **Measured split** (pixel sampling of rendered pages, brand hues only): results 60/35/5 and detail 65/17/17 (the home page has since moved from a full red background to the cream canvas, so it is no longer 88/12/1). Accent hues rarely reach a literal 10% of area without overwhelming the page.
+- **Contrast (WCAG AA, 4.5:1 for small text):** dark brown ink passes on orange (5.2:1) and sky (7.4:1 with navy ink), so both use the exact hex. White on `#2789bd` is only 3.9:1, so buttons use the deeper `#1f76a5` (5.0:1) and link text `#1b6e9b` (4.7:1+). The exact `#2789bd` is kept for focus rings and edges.
+- Text is warm brown, never pure black. Sky tints and the blue accent share a hue, so depth (a slightly deeper tint) separates the facts panel from the review cards.
 
 ## Styling
 

@@ -1,4 +1,4 @@
-/* search-box: white fields; the compact variant sits on the paprika header band */
+/* search-box: white fields; the compact variant sits on the orange header band */
 .search-box__form {
   display: flex;
   gap: var(--space-1);
@@ -28,7 +28,7 @@
   box-shadow: var(--focus-ring-on-brand);
 }
 
-/* Home: the field sits on the cream canvas, so it gets a border, shadow and violet focus */
+/* Home: the field sits on the cream canvas, so it gets a border, shadow and blue focus */
 .search-box--hero .search-box__input {
   height: var(--control-height-lg);
   padding: 0 var(--space-3);
@@ -41,7 +41,7 @@
   box-shadow: var(--focus-ring);
 }
 
-/* Home: the pills sit on a mint card (the 30% green) so the hero isn't all red */
+/* Home: the pills sit on a sky-tint card (the 30% sky blue) */
 .search-box__picker {
   margin-top: var(--space-4);
   padding: var(--space-3);
@@ -109,7 +109,7 @@
   background: var(--color-secondary-soft);
 }
 
-/* Selected pill: the 30% green, with dark ink (white would fail contrast) */
+/* Selected pill: the 30% sky blue, with dark ink (white would fail contrast) */
 .search-box__pill--active,
 .search-box__pill--active:hover {
   background: var(--color-secondary);

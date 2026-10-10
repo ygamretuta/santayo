@@ -11,7 +11,7 @@
   line-height: var(--space-6);
 }
 
-/* Green highlight with dark ink: white or green-on-red would fail contrast. */
+/* Sky-blue highlight with dark ink (white on sky would fail contrast). */
 .home__accent {
   padding: 0 var(--space-1);
   border-radius: var(--radius-1);

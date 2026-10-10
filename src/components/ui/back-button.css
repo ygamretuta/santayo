@@ -1,4 +1,4 @@
-/* back-button: sits on the brand band, so it is white-on-paprika */
+/* back-button: sits on the orange brand band, so it is dark ink on orange */
 .back-button {
   display: inline-flex;
   height: var(--control-height-sm);
@@ -14,5 +14,5 @@
 }
 
 .back-button:hover {
-  background: rgb(255 255 255 / 0.16);
+  background: rgb(43 24 18 / 0.12);
 }
