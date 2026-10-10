@@ -1,6 +1,14 @@
-/* reviews */
+/* reviews: overall rating, then compact review cards (two columns on wide screens) */
 .reviews {
   margin-top: var(--space-4);
+}
+
+.reviews__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
 }
 
 .reviews__title {
@@ -15,13 +23,18 @@
 }
 
 .reviews__list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
   margin-top: var(--space-2);
 }
 
 .reviews__item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-2);
@@ -29,27 +42,59 @@
 
 .reviews__head {
   display: flex;
-  align-items: center;
+  width: 100%;
+  align-items: baseline;
   justify-content: space-between;
   gap: var(--space-2);
 }
 
 .reviews__author {
+  min-width: 0;
+  overflow: hidden;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.reviews__author:hover {
+.reviews__author-link:hover {
   text-decoration: underline;
 }
 
 .reviews__when {
+  flex-shrink: 0;
   color: var(--color-muted);
   font-size: 14px;
 }
 
+/* Clamp to three lines; the toggle appears only if text is actually cut off. */
 .reviews__text {
-  margin-top: var(--space-1);
+  display: -webkit-box;
+  overflow: hidden;
   color: var(--color-text-soft);
+  font-size: 14px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.reviews__text--expanded {
+  display: block;
+}
+
+.reviews__toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reviews__toggle:hover {
+  text-decoration: underline;
+}
+
+.reviews__more {
+  margin-top: var(--space-2);
 }
 
 .reviews__note {
@@ -57,4 +102,10 @@
   color: var(--color-muted);
   font-size: 12px;
   line-height: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .reviews__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

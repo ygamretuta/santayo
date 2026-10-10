@@ -33,7 +33,7 @@ async function RestaurantDetails({ params }: { params: Params }) {
       <BackButton />
       <RestaurantHeader r={r} />
       <InfoCard r={r} />
-      <Reviews reviews={r.reviews} demo={r.id.startsWith("demo.")} />
+      <Reviews reviews={r.reviews} rating={r.rating} count={r.reviewCount} demo={r.id.startsWith("demo.")} />
       <SocialLinks r={r} />
     </main>
   );
