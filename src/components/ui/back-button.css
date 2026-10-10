@@ -1,3 +1,4 @@
+/* back-button: sits on the brand band, so it is white-on-paprika */
 .back-button {
   display: inline-flex;
   height: var(--control-height-sm);
@@ -7,11 +8,11 @@
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--color-text-soft);
+  color: var(--color-on-brand);
   font-size: 14px;
   font-weight: 500;
 }
 
 .back-button:hover {
-  background: var(--color-hover);
+  background: rgb(255 255 255 / 0.16);
 }

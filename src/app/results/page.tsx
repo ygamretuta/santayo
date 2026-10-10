@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SearchBox } from "@/components/search/SearchBox";
 import { Logo } from "@/components/ui/Logo";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 import { Status } from "@/components/ui/Status";
 import { ResultsView } from "@/components/results/ResultsView";
 import "./results-page.css";
@@ -32,17 +33,21 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
   const page = Math.max(1, parseInt(first(sp.page), 10) || 1);
 
   return (
-    <main className="page">
-      <header className="results-page__header">
-        <Logo />
-        <div className="results-page__search">
-          <SearchBox key={q} initial={q} variant="compact" />
+    <>
+      <SiteHeader>
+        <div className="results-page__bar">
+          <Logo />
+          <div className="results-page__search">
+            <SearchBox key={q} initial={q} variant="compact" />
+          </div>
         </div>
-      </header>
-      <h1 className="results-page__title">
-        <span className="results-page__term">{q}</span> near you
-      </h1>
-      <ResultsView q={q} radius={radius} page={page} />
-    </main>
+      </SiteHeader>
+      <main className="page">
+        <h1 className="results-page__title">
+          <span className="results-page__term">{q}</span> near you
+        </h1>
+        <ResultsView q={q} radius={radius} page={page} />
+      </main>
+    </>
   );
 }

@@ -40,7 +40,8 @@
 }
 
 .restaurant-header__price {
-  font-weight: 600;
+  color: var(--color-accent-text);
+  font-weight: 700;
 }
 
 .restaurant-header__price-caption {

@@ -28,13 +28,13 @@
   gap: var(--space-2);
   padding: var(--space-2);
   border-radius: var(--radius-2);
-  background: var(--color-dark-tile);
+  background: var(--color-accent);
   color: #ffffff;
   transition: background-color 0.15s;
 }
 
 .social__tiktok-link:hover {
-  background: var(--color-dark-tile-hover);
+  background: var(--color-accent-hover);
 }
 
 .social__icon {
@@ -55,7 +55,7 @@
 
 .social__hint {
   display: block;
-  color: #d6d3d1;
+  color: rgb(255 255 255 / 0.85);
   font-size: 12px;
   line-height: var(--space-2);
 }
@@ -79,7 +79,7 @@
 }
 
 .social__other:hover {
-  border-color: var(--color-accent-edge);
+  border-color: var(--color-secondary);
 }
 
 @media (min-width: 640px) {

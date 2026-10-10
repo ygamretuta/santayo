@@ -28,35 +28,70 @@
   --control-height-sm: var(--space-4);
   --control-height-lg: var(--space-7);
 
-  --color-bg: #fafaf9;
-  --color-surface: #ffffff;
-  --color-text: #1c1917;
-  --color-text-soft: #44403c;
-  --color-muted: #78716c;
-  --color-border: #e7e5e4;
-  --color-border-strong: #d6d3d1;
-  --color-accent: #f97316;
-  --color-accent-hover: #ea580c;
-  --color-accent-text: #ea580c;
-  --color-accent-soft: #fff7ed;
-  --color-accent-edge: #fb923c;
-  --color-focus: rgb(249 115 22 / 0.3);
+  /*
+   * Palette, 60-30-10 (a triad of the same saturation, 120deg apart):
+   *   60%  paprika  #d94f30  dominant: hero, header band, page canvas tint
+   *        (rendered as #cd492b: ~3% deeper so white text passes WCAG AA, 4.6:1
+   *        instead of 4.1:1. Set --paprika back to #d94f30 for the exact hex.)
+   *   30%  green    #30d94f  secondary: cards and panels, chips, active pills
+   *   10%  violet   #4f30d9  accent: buttons, links, focus
+   * Tints/shades of each hue carry the supporting detail. Text is warm brown.
+   */
+  --paprika: #cd492b;
+  --paprika-dark: #b03a1f;
+  --green: #30d94f;
+  --green-ink: #0b2e13;
+  --violet: #4f30d9;
+  --violet-dark: #3f24b5;
+
+  /* 60%: paprika */
+  --color-brand: var(--paprika);
+  --color-on-brand: #ffffff;
+  --color-brand-dark: var(--paprika-dark);
+  --color-bg: #fff4f0;
+
+  /* 30%: green */
+  --color-secondary: var(--green);
+  --color-on-secondary: var(--green-ink);
+  --color-surface: #effcf1;
+  --color-border: #bdeec7;
+  --color-secondary-soft: #d5f7db;
+
+  /* 10%: violet */
+  --color-accent: var(--violet);
+  --color-accent-hover: var(--violet-dark);
+  --color-accent-text: var(--violet);
+  --color-accent-soft: #efecfd;
+  --color-accent-edge: #a594f0;
+  --color-accent-border: #d9d2fa;
+  --color-focus: rgb(79 48 217 / 0.3);
+  --color-focus-on-brand: rgb(255 255 255 / 0.6);
+
+  /* Text and neutrals (warm, never pure black) */
+  --color-text: #2b1812;
+  --color-text-soft: #4d3730;
+  --color-muted: #7b5c52;
+  --color-field: #ffffff;
+  --color-border-strong: #f2c2b4;
+  --color-hover: #fde3db;
+
+  /* Semantic */
   --color-star: #f59e0b;
-  --color-star-empty: #d6d3d1;
-  --color-ok: #16a34a;
-  --color-bad: #dc2626;
+  --color-star-empty: #e9d4cc;
+  --color-ok: #14782b;
+  --color-bad: #c42a1c;
   --color-notice-bg: #fffbeb;
   --color-notice-border: #fcd34d;
   --color-notice-text: #78350f;
-  --color-photo-from: #fed7aa;
-  --color-photo-to: #fef3c7;
-  --color-dark-tile: #1c1917;
-  --color-dark-tile-hover: #000000;
-  --color-hover: #f5f5f4;
+  --color-photo-from: #fde3db;
+  --color-photo-to: #d5f7db;
+  --color-dark-tile: #2b1812;
+  --color-dark-tile-hover: var(--violet);
 
   --shadow-sm: 0 8px 16px -8px rgb(0 0 0 / 0.15);
   --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 0.25);
   --focus-ring: 0 0 0 4px var(--color-focus);
+  --focus-ring-on-brand: 0 0 0 4px var(--color-focus-on-brand);
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
@@ -64,24 +99,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0c0a09;
-    --color-surface: #1c1917;
-    --color-text: #ededed;
-    --color-text-soft: #d6d3d1;
-    --color-muted: #a8a29e;
-    --color-border: #292524;
-    --color-border-strong: #44403c;
-    --color-accent-soft: #292524;
-    --color-focus: rgb(249 115 22 / 0.4);
-    --color-star-empty: #44403c;
+    --color-bg: #26120d;
+    --color-surface: #112418;
+    --color-border: #1f4a2b;
+    --color-secondary-soft: #1a3a24;
+    --color-accent: #7058ea;
+    --color-accent-hover: #5f43df;
+    --color-accent-text: #a594f5;
+    --color-accent-soft: #241c4a;
+    --color-accent-edge: #5b43d4;
+    --color-accent-border: #3a2f7a;
+    --color-focus: rgb(112 88 234 / 0.45);
+    --color-text: #fbeee9;
+    --color-text-soft: #ecd5cc;
+    --color-muted: #c4a399;
+    --color-field: #1c0d09;
+    --color-border-strong: #5a2c20;
+    --color-hover: #3a1c14;
+    --color-star-empty: #4a3029;
+    --color-ok: #4ade6a;
+    --color-bad: #ff7a6b;
     --color-notice-bg: #451a03;
     --color-notice-border: #b45309;
     --color-notice-text: #fef3c7;
     --color-photo-from: #431407;
-    --color-photo-to: #292524;
-    --color-dark-tile: #292524;
-    --color-dark-tile-hover: #44403c;
-    --color-hover: #292524;
+    --color-photo-to: #1a3a24;
+    --color-dark-tile: #3a1c14;
+    --color-dark-tile-hover: #7058ea;
   }
 }
 
@@ -156,6 +200,14 @@ code {
   flex: 1;
   margin: 0 auto;
   padding: var(--space-3) var(--space-2);
+}
+
+/* hero: full-bleed paprika background around the home page content */
+.hero {
+  display: flex;
+  flex: 1;
+  background: var(--color-brand);
+  color: var(--color-on-brand);
 }
 
 .page--home {

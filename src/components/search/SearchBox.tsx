@@ -25,6 +25,27 @@ export function SearchBox({ initial = "", variant }: Props) {
     if (q) router.push(`/results?q=${encodeURIComponent(q)}`);
   }
 
+  const pills = (
+        <ul className="search-box__pills">
+          {FOOD_PILLS.map((f) => {
+            const isActive = active === f.label.toLowerCase();
+            return (
+              <li key={f.label} className="search-box__pill-item">
+                <Link
+                  href={`/results?q=${encodeURIComponent(f.label)}`}
+                  onClick={() => setValue(f.label)}
+                  aria-current={isActive}
+                  className={`search-box__pill ${isActive ? "search-box__pill--active" : ""}`}
+                >
+                  <span aria-hidden>{f.emoji}</span>
+                  {f.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+  );
+
   return (
     <div className={`search-box search-box--${variant}`}>
       <form onSubmit={submit} action="/results" className="search-box__form">
@@ -43,25 +64,14 @@ export function SearchBox({ initial = "", variant }: Props) {
         />
         <button className={`button ${hero ? "button--lg" : ""}`}>{hero ? "Find food" : "Search"}</button>
       </form>
-      {hero && <p className="search-box__hint">Can’t decide? Pick one</p>}
-      <ul className="search-box__pills">
-        {FOOD_PILLS.map((f) => {
-          const isActive = active === f.label.toLowerCase();
-          return (
-            <li key={f.label} className="search-box__pill-item">
-              <Link
-                href={`/results?q=${encodeURIComponent(f.label)}`}
-                onClick={() => setValue(f.label)}
-                aria-current={isActive}
-                className={`search-box__pill ${isActive ? "search-box__pill--active" : ""}`}
-              >
-                <span aria-hidden>{f.emoji}</span>
-                {f.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      {hero ? (
+        <div className="search-box__picker">
+          <p className="search-box__hint">Can’t decide? Pick one</p>
+          {pills}
+        </div>
+      ) : (
+        pills
+      )}
     </div>
   );
 }

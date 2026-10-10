@@ -5,8 +5,9 @@
   gap: var(--space-3);
   margin-top: var(--space-3);
   padding: var(--space-3);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-accent-border);
   border-radius: var(--radius-2);
+  background: var(--color-accent-soft);
 }
 
 .info-card__column {

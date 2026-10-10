@@ -5,9 +5,9 @@ import "./detail-topbar.css";
 /** Logo (home link) and a back button above the restaurant details. */
 export function DetailTopBar() {
   return (
-    <header className="detail-topbar">
+    <div className="detail-topbar">
       <Logo />
       <BackButton />
-    </header>
+    </div>
   );
 }

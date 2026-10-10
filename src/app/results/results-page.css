@@ -1,9 +1,8 @@
-.results-page__header {
+.results-page__bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
 }
 
 .results-page__search {
@@ -23,7 +22,7 @@
 }
 
 @media (min-width: 640px) {
-  .results-page__header {
+  .results-page__bar {
     flex-wrap: nowrap;
     align-items: flex-start;
   }

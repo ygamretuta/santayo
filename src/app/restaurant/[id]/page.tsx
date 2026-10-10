@@ -6,6 +6,7 @@ import { InfoCard } from "@/components/restaurant/InfoCard";
 import { RestaurantHeader } from "@/components/restaurant/RestaurantHeader";
 import { Reviews } from "@/components/restaurant/Reviews";
 import { SocialLinks } from "@/components/restaurant/SocialLinks";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 import { Status } from "@/components/ui/Status";
 import { getRestaurant } from "@/lib/places";
 
@@ -29,12 +30,16 @@ async function RestaurantDetails({ params }: { params: Params }) {
   if (!r) notFound();
 
   return (
-    <main className="page page--detail">
-      <DetailTopBar />
-      <RestaurantHeader r={r} />
-      <InfoCard r={r} />
-      <Reviews reviews={r.reviews} rating={r.rating} count={r.reviewCount} demo={r.id.startsWith("demo.")} />
-      <SocialLinks r={r} />
-    </main>
+    <>
+      <SiteHeader width="detail">
+        <DetailTopBar />
+      </SiteHeader>
+      <main className="page page--detail">
+        <RestaurantHeader r={r} />
+        <InfoCard r={r} />
+        <Reviews reviews={r.reviews} rating={r.rating} count={r.reviewCount} demo={r.id.startsWith("demo.")} />
+        <SocialLinks r={r} />
+      </main>
+    </>
   );
 }

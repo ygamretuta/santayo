@@ -11,13 +11,16 @@
   line-height: var(--space-6);
 }
 
+/* Green highlight with dark ink: white or green-on-red would fail contrast. */
 .home__accent {
-  color: var(--color-accent-text);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-1);
+  background: var(--color-secondary);
+  color: var(--color-on-secondary);
 }
 
 .home__lead {
   margin-top: var(--space-2);
-  color: var(--color-muted);
 }
 
 @media (min-width: 640px) {

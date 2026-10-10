@@ -10,12 +10,12 @@
 }
 
 .restaurant-card:hover {
-  border-color: var(--color-accent-edge);
+  border-color: var(--color-secondary);
   box-shadow: var(--shadow-md);
 }
 
 .restaurant-card:hover .restaurant-card__name {
-  color: var(--color-accent-text);
+  color: var(--color-brand-dark);
 }
 
 .restaurant-card__thumb {
@@ -59,7 +59,8 @@
 }
 
 .restaurant-card__price-label {
-  font-weight: 600;
+  color: var(--color-accent-text);
+  font-weight: 700;
 }
 
 .restaurant-card__price-caption {

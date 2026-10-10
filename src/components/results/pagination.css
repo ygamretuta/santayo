@@ -33,14 +33,14 @@
 }
 
 .pagination__link:hover {
-  border-color: var(--color-accent-edge);
+  border-color: var(--color-secondary);
 }
 
 .pagination__link--active,
 .pagination__link--active:hover {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-  color: #ffffff;
+  border-color: var(--color-secondary);
+  background: var(--color-secondary);
+  color: var(--color-on-secondary);
 }
 
 /* Prev/Next show arrows only on narrow screens so the row fits on one line. */
