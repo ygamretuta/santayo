@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SearchBox } from "@/components/search/SearchBox";
+import { Logo } from "@/components/ui/Logo";
 import { Status } from "@/components/ui/Status";
 import { ResultsView } from "@/components/results/ResultsView";
 import "./results-page.css";
@@ -34,9 +34,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
   return (
     <main className="page">
       <header className="results-page__header">
-        <Link href="/" className="results-page__logo">
-          Santayo
-        </Link>
+        <Logo />
         <div className="results-page__search">
           <SearchBox key={q} initial={q} variant="compact" />
         </div>

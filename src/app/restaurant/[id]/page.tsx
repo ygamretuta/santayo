@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { DetailTopBar } from "@/components/restaurant/DetailTopBar";
 import { InfoCard } from "@/components/restaurant/InfoCard";
 import { RestaurantHeader } from "@/components/restaurant/RestaurantHeader";
 import { Reviews } from "@/components/restaurant/Reviews";
 import { SocialLinks } from "@/components/restaurant/SocialLinks";
-import { BackButton } from "@/components/ui/BackButton";
 import { Status } from "@/components/ui/Status";
 import { getRestaurant } from "@/lib/places";
 
@@ -30,7 +30,7 @@ async function RestaurantDetails({ params }: { params: Params }) {
 
   return (
     <main className="page page--detail">
-      <BackButton />
+      <DetailTopBar />
       <RestaurantHeader r={r} />
       <InfoCard r={r} />
       <Reviews reviews={r.reviews} rating={r.rating} count={r.reviewCount} demo={r.id.startsWith("demo.")} />

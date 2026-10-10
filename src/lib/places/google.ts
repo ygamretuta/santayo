@@ -143,10 +143,11 @@ export async function googleDetails(id: string): Promise<Restaurant | null> {
   return mapPlace(await res.json());
 }
 
-/** Streams a place photo; the API key never reaches the browser. */
+/**
+ * Streams a place photo; the API key never reaches the browser. Not stored in
+ * Next's data cache (full-size photos exceed its 2 MB item limit and log an
+ * error); /api/photo's Cache-Control header lets the CDN and browser cache it.
+ */
 export async function googlePhoto(name: string, width: number): Promise<Response> {
-  return fetch(
-    `${BASE}/${name}/media?maxWidthPx=${width}&key=${googleKey()}`,
-    { next: { revalidate: 86400 } },
-  );
+  return fetch(`${BASE}/${name}/media?maxWidthPx=${width}&key=${googleKey()}`, { cache: "no-store" });
 }

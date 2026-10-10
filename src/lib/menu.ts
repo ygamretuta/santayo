@@ -101,8 +101,8 @@ async function safeFetch(url: string, init: RequestInit = {}): Promise<{ res: Re
       ...init,
       redirect: "manual",
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-      headers: { "User-Agent": "SantayoBot/1.0 (menu lookup)", Accept: "text/html,application/pdf,image/*", ...init.headers },
       next: { revalidate: REVALIDATE_SECONDS },
+      headers: { "User-Agent": "SantayoBot/1.0 (menu lookup)", Accept: "text/html,application/pdf,image/*", ...init.headers },
     });
     const loc = res.headers.get("location");
     if (res.status >= 300 && res.status < 400 && loc) {

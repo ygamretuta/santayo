@@ -6,15 +6,6 @@
   margin-bottom: var(--space-3);
 }
 
-.results-page__logo {
-  display: inline-flex;
-  height: var(--control-height);
-  align-items: center;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-accent-text);
-}
-
 .results-page__search {
   min-width: 0;
   flex: 1 1 100%;
