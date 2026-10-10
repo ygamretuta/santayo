@@ -1,0 +1,84 @@
+/* restaurant-header: photo gallery, name, rating, price, status */
+.restaurant-header__gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.restaurant-header__photo {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-2);
+}
+
+.restaurant-header__photo--extra {
+  display: none;
+}
+
+.restaurant-header__intro {
+  margin-top: var(--space-3);
+}
+
+.restaurant-header__name {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: var(--space-5);
+}
+
+.restaurant-header__category {
+  margin-top: var(--space-1);
+  color: var(--color-muted);
+}
+
+.restaurant-header__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.restaurant-header__price {
+  font-weight: 600;
+}
+
+.restaurant-header__price-caption {
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.restaurant-header__status {
+  font-weight: 500;
+}
+
+.restaurant-header__status--open {
+  color: var(--color-ok);
+}
+
+.restaurant-header__status--closed {
+  color: var(--color-bad);
+}
+
+.restaurant-header__summary {
+  max-width: 640px;
+  margin-top: var(--space-2);
+  color: var(--color-text-soft);
+}
+
+@media (min-width: 640px) {
+  .restaurant-header__gallery--multi {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .restaurant-header__gallery--multi .restaurant-header__photo--main {
+    min-height: 288px;
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .restaurant-header__photo--extra {
+    display: block;
+  }
+}

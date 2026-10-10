@@ -2,8 +2,8 @@ import Link from "next/link";
 import { formatDistance } from "@/lib/geo";
 import { formatPrice } from "@/lib/price";
 import type { Restaurant } from "@/lib/types";
-import { Stars } from "./Stars";
-import { Thumb } from "./Thumb";
+import { Stars } from "../ui/Stars";
+import { Thumb } from "../ui/Thumb";
 import "./restaurant-card.css";
 
 export function RestaurantCard({ r }: { r: Restaurant }) {

@@ -1,5 +1,5 @@
 /*
- * Design tokens, base styles and the shared blocks (page, status, button).
+ * Design tokens, base styles and the shared blocks (page, button).
  *
  * Naming: BEM (block__element--modifier).
  * Spacing: every layout measurement is a multiple of 8px, taken from the
@@ -186,13 +186,6 @@ code {
   .page {
     padding-inline: var(--space-3);
   }
-}
-
-/* status: loading / empty / error message */
-.status {
-  padding: var(--space-8) 0;
-  color: var(--color-muted);
-  text-align: center;
 }
 
 /* button: accent pill; --lg for hero forms */

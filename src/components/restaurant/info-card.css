@@ -1,0 +1,41 @@
+/* info-card: details + opening hours */
+.info-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+
+.info-card__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 14px;
+}
+
+.info-card__heading {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: var(--space-4);
+}
+
+.info-card__link {
+  color: var(--color-accent-text);
+}
+
+.info-card__link:hover {
+  text-decoration: underline;
+}
+
+.info-card__hours {
+  color: var(--color-text-soft);
+}
+
+@media (min-width: 640px) {
+  .info-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

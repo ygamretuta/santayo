@@ -1,0 +1,15 @@
+/* results-view: notices shown above the list */
+.results-view__notice {
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-notice-border);
+  border-radius: var(--radius-2);
+  background: var(--color-notice-bg);
+  color: var(--color-notice-text);
+  font-size: 14px;
+}
+
+.results-view__retry {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}

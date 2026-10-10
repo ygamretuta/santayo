@@ -24,6 +24,24 @@ Average price comes from Google's `priceRange` (midpoint); when a place only has
 - Location comes from the browser and is kept in `sessionStorage` (never in the URL); coordinates are rounded to ~110 m before being sent. If permission is denied, you can search by city/area (Open-Meteo geocoding).
 - TikTok has no public search/embed API, so the detail page links out to TikTok searches for the restaurant (plus YouTube/Instagram/Facebook/Reddit).
 
+## Project structure
+
+```
+src/
+  app/                 routes, route handlers (api/*) and page-level styles
+  components/
+    ui/                shared primitives: Thumb, Stars, Status, BackButton
+    search/            SearchBox (input + food pills)
+    results/           ResultsView and its parts: toolbar, list, card, pagination, location fallback
+    restaurant/        detail-page sections: header, info card, reviews, social links
+  hooks/               client hooks: useCoords (location), useRestaurantSearch (fetch)
+  lib/
+    places/            data providers (Google, demo), dedupe, provider switch
+    *.ts               pure helpers: geo, price, sort, paginate, social, foods, types, guard
+```
+
+Each component sits next to its BEM stylesheet, and tests sit next to the code they cover (`*.test.ts`).
+
 ## Styling
 
 - **BEM** (`block__element--modifier`). Each component owns one stylesheet named after its block, imported by the component (e.g. `search-box.css` for `SearchBox`). Shared tokens, base styles and the `page`, `status` and `button` blocks live in `src/app/globals.css`.

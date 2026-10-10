@@ -1,5 +1,5 @@
-import { haversineKm } from "./geo";
-import type { Restaurant } from "./types";
+import { haversineKm } from "../geo";
+import type { Restaurant } from "../types";
 
 function tokens(name: string): string[] {
   return name

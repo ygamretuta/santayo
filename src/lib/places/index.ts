@@ -1,6 +1,6 @@
 import { cache } from "react";
 import type { Restaurant, SearchResult } from "../types";
-import { dedupeRestaurants } from "../dedupe";
+import { dedupeRestaurants } from "./dedupe";
 import { demoRestaurant, demoSearch, isDemoId } from "./demo";
 import { googleDetails, googleKey, googleSearch } from "./google";
 

@@ -1,0 +1,44 @@
+/* location-fallback: shown when geolocation is unavailable */
+.location-fallback {
+  max-width: 448px;
+  margin: 0 auto;
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+.location-fallback__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.location-fallback__text {
+  margin-top: var(--space-1);
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.location-fallback__form {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+.location-fallback__input {
+  height: var(--control-height);
+  min-width: 0;
+  flex: 1;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-2);
+  background: transparent;
+}
+
+.location-fallback__button {
+  border-radius: var(--radius-2);
+}
+
+.location-fallback__error {
+  margin-top: var(--space-2);
+  color: var(--color-bad);
+  font-size: 14px;
+}

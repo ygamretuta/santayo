@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { SearchBox } from "@/components/SearchBox";
-import { ResultsView } from "@/components/ResultsView";
+import { SearchBox } from "@/components/search/SearchBox";
+import { Status } from "@/components/ui/Status";
+import { ResultsView } from "@/components/results/ResultsView";
 import "./results-page.css";
 
 type SearchParams = Promise<{ q?: string | string[]; r?: string | string[]; page?: string | string[] }>;
@@ -17,7 +18,7 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
 
 export default function ResultsPage({ searchParams }: { searchParams: SearchParams }) {
   return (
-    <Suspense fallback={<p role="status" className="status">🍳 Loading…</p>}>
+    <Suspense fallback={<Status>🍳 Loading…</Status>}>
       <Results searchParams={searchParams} />
     </Suspense>
   );
