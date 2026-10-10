@@ -97,9 +97,12 @@
   color: #ffffff;
 }
 
+/* Phones swipe the row sideways; wider screens wrap it so no pill is cut off. */
 @media (min-width: 640px) {
   .search-box--compact .search-box__pills {
+    flex-wrap: wrap;
     margin-inline: 0;
     padding-inline: 0;
+    overflow-x: visible;
   }
 }
