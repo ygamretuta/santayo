@@ -1,8 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { searchRestaurants } from "@/lib/places";
+import { clampRadius, DEFAULT_RADIUS_KM } from "@/lib/radius";
 import { guard } from "@/lib/guard";
-
-const MAX_RADIUS_KM = 10;
 
 export async function GET(request: NextRequest) {
   const blocked = await guard(request, "search", 20);
@@ -11,7 +10,7 @@ export async function GET(request: NextRequest) {
   const q = (p.get("q") ?? "").trim().slice(0, 60);
   const lat = Number(p.get("lat"));
   const lng = Number(p.get("lng"));
-  const r = Number(p.get("r") ?? 5);
+  const r = Number(p.get("r") ?? DEFAULT_RADIUS_KM);
 
   if (
     !q ||
@@ -20,7 +19,7 @@ export async function GET(request: NextRequest) {
   ) {
     return NextResponse.json({ error: "Invalid search parameters" }, { status: 400 });
   }
-  const radiusKm = Math.min(Math.max(Number.isFinite(r) ? r : 5, 1), MAX_RADIUS_KM);
+  const radiusKm = clampRadius(r);
 
   try {
     return NextResponse.json(await searchRestaurants(q, { lat, lng }, radiusKm));

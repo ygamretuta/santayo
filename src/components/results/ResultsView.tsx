@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { clearCoords, useCoords } from "@/hooks/useCoords";
 import { useRestaurantSearch } from "@/hooks/useRestaurantSearch";
 import { paginate } from "@/lib/paginate";
+import { formatRadius, nextRadius } from "@/lib/radius";
 import { sortRestaurants, type Sort } from "@/lib/sort";
 import { Status } from "../ui/Status";
 import { LocationFallback } from "./LocationFallback";
@@ -28,6 +29,8 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
   const pageData = useMemo(() => paginate(sorted, page), [sorted, page]);
   const hrefFor = (n: number) =>
     `/results?q=${encodeURIComponent(q)}&r=${radius}${n > 1 ? `&page=${n}` : ""}`;
+
+  const wider = nextRadius(radius);
 
   if (!coords) {
     return denied ? <LocationFallback /> : <Status>📍 Finding where you are…</Status>;
@@ -60,10 +63,10 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
         <Status>Something went wrong: {search.error}. Please try again.</Status>
       ) : sorted.length === 0 ? (
         <Status>
-          No {q} spots within {radius} km.{" "}
-          {radius < 10 && (
-            <Link href={`/results?q=${encodeURIComponent(q)}&r=10`} replace className="results-view__retry">
-              Try 10 km
+          No {q} spots within {formatRadius(radius)}.{" "}
+          {wider && (
+            <Link href={`/results?q=${encodeURIComponent(q)}&r=${wider}`} replace className="results-view__retry">
+              Try {formatRadius(wider)}
             </Link>
           )}
         </Status>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { formatRadius, RADII_KM } from "@/lib/radius";
 import { SORTS, type Sort } from "@/lib/sort";
 import "./results-toolbar.css";
 
@@ -14,8 +15,6 @@ interface Props {
   onChangeLocation: () => void;
 }
 
-const RADII = [5, 10];
-
 /** Radius chips, "change location" and the sort dropdown. */
 export function ResultsToolbar({ q, radius, placeLabel, sort, onSortChange, onChangeLocation }: Props) {
   return (
@@ -24,7 +23,7 @@ export function ResultsToolbar({ q, radius, placeLabel, sort, onSortChange, onCh
         <span className="results-toolbar__label">
           {placeLabel ? `Near ${placeLabel}` : "Near you"} · within
         </span>
-        {RADII.map((km) => (
+        {RADII_KM.map((km) => (
           <Link
             key={km}
             href={`/results?q=${encodeURIComponent(q)}&r=${km}`}
@@ -32,7 +31,7 @@ export function ResultsToolbar({ q, radius, placeLabel, sort, onSortChange, onCh
             aria-current={km === radius}
             className={`results-toolbar__chip ${km === radius ? "results-toolbar__chip--active" : ""}`}
           >
-            {km} km
+            {formatRadius(km)}
           </Link>
         ))}
         <button type="button" onClick={onChangeLocation} className="results-toolbar__link-button">

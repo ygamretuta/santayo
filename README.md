@@ -1,6 +1,6 @@
 # Santayo
 
-Tell it what you're craving (type it, or tap a pill like *Steak* or *Fried chicken*) and get restaurants within 5 or 10 km: thumbnail, star rating and average price per person. Tap one for details, reviews and TikTok review searches.
+Tell it what you're craving (type it, or tap a pill like *Steak* or *Fried chicken*) and get restaurants within 500 m, 5 km or 10 km (500 m is the default): thumbnail, star rating and average price per person. Tap one for details, reviews and TikTok review searches.
 
 **Stack:** Next.js 16 (App Router, Cache Components) · React 19 · TypeScript · plain CSS (BEM) · Vercel
 

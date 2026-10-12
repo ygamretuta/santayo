@@ -5,6 +5,7 @@ import { SearchBox } from "@/components/search/SearchBox";
 import { Logo } from "@/components/ui/Logo";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { Status } from "@/components/ui/Status";
+import { parseRadius } from "@/lib/radius";
 import { ResultsView } from "@/components/results/ResultsView";
 import "./results-page.css";
 
@@ -29,7 +30,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
   const q = first(sp.q).trim().slice(0, 60);
   if (!q) redirect("/");
-  const radius = first(sp.r) === "10" ? 10 : 5;
+  const radius = parseRadius(first(sp.r));
   const page = Math.max(1, parseInt(first(sp.page), 10) || 1);
 
   return (

@@ -91,7 +91,8 @@ export function demoRestaurant(
   const food = titleCase(slug);
   const name = TEMPLATES[n % TEMPLATES.length].replace("{F}", food);
   const level = (1 + Math.floor(rand() * 3)) as 1 | 2 | 3;
-  const distanceKm = ctx ? 0.4 + rand() * (ctx.radiusKm - 0.4) : undefined;
+  const minKm = ctx ? Math.min(0.4, ctx.radiusKm * 0.2) : 0;
+  const distanceKm = ctx ? minKm + rand() * (ctx.radiusKm - minKm) : undefined;
   const pos =
     ctx && distanceKm != null
       ? offsetPoint(ctx.origin, distanceKm, rand() * 360)
