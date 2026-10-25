@@ -1,3 +1,4 @@
+import { trackGoogleCall } from "../admin/usage";
 import { averageOfRange } from "../price";
 import { boundingBox, haversineKm } from "../geo";
 import type { PriceLevel, Restaurant, Review } from "../types";
@@ -122,6 +123,7 @@ export async function googleSearch(
     }),
     cache: "no-store",
   });
+  trackGoogleCall("search", res.ok);
   if (!res.ok) throw new Error(`Places search failed (${res.status})`);
   const data = await res.json();
 
@@ -138,6 +140,7 @@ export async function googleDetails(id: string): Promise<Restaurant | null> {
     },
     next: { revalidate: 3600 },
   });
+  trackGoogleCall("details", res.ok || res.status === 404 || res.status === 400);
   if (res.status === 404 || res.status === 400) return null;
   if (!res.ok) throw new Error(`Places details failed (${res.status})`);
   return mapPlace(await res.json());
@@ -149,5 +152,7 @@ export async function googleDetails(id: string): Promise<Restaurant | null> {
  * error); /api/photo's Cache-Control header lets the CDN and browser cache it.
  */
 export async function googlePhoto(name: string, width: number): Promise<Response> {
-  return fetch(`${BASE}/${name}/media?maxWidthPx=${width}&key=${googleKey()}`, { cache: "no-store" });
+  const res = await fetch(`${BASE}/${name}/media?maxWidthPx=${width}&key=${googleKey()}`, { cache: "no-store" });
+  trackGoogleCall("photo", res.ok);
+  return res;
 }

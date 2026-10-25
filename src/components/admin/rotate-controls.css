@@ -1,0 +1,72 @@
+.rotate-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.rotate-controls__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.rotate-controls__missing,
+.rotate-controls__busy {
+  font-size: 14px;
+}
+
+.rotate-controls__missing {
+  padding: var(--space-2);
+  border-radius: var(--radius-1);
+  background: var(--color-notice-bg);
+  color: var(--color-notice-text);
+}
+
+.rotate-controls__code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.rotate-controls__confirm {
+  padding: var(--space-2);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-1);
+  background: var(--color-accent-soft);
+  font-size: 14px;
+}
+
+.rotate-controls__confirm .rotate-controls__buttons {
+  margin-top: var(--space-2);
+}
+
+.rotate-controls__result {
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-1);
+  background: var(--color-field);
+  font-size: 14px;
+}
+
+.rotate-controls__result--ok {
+  border-color: var(--color-ok);
+}
+
+.rotate-controls__result--bad {
+  border-color: var(--color-bad);
+}
+
+.rotate-controls__headline {
+  font-weight: 700;
+}
+
+.rotate-controls__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.rotate-controls__detail {
+  color: var(--color-muted);
+}

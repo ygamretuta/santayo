@@ -1,0 +1,38 @@
+.admin-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.admin-bar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-bar__badge {
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-1);
+  background: var(--color-on-brand);
+  color: var(--color-brand);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: var(--space-3);
+  text-transform: uppercase;
+}
+
+.admin-bar__logout {
+  height: var(--control-height-sm);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-on-brand);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-bar__logout:hover {
+  background: rgb(43 24 18 / 0.12);
+}

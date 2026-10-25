@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { connection } from "next/server";
 import type { Restaurant, SearchResult } from "../types";
 import { dedupeRestaurants } from "./dedupe";
 import { demoRestaurant, demoSearch, isDemoId } from "./demo";
@@ -18,6 +19,8 @@ export async function searchRestaurants(
 }
 
 export const getRestaurant = cache(async (id: string): Promise<Restaurant | null> => {
+  // Real lookups only: never during prerendering or dev-time validation with placeholder ids.
+  await connection();
   if (!/^[\w.-]+$/.test(id)) return null;
   if (isDemoId(id)) return demoRestaurant(id);
   if (!usingGoogle()) return null;

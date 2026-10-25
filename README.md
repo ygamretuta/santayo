@@ -46,6 +46,39 @@ src/
 
 Each component sits next to its BEM stylesheet, and tests sit next to the code they cover (`*.test.ts`).
 
+## Admin dashboard
+
+`/admin` is a small, password-protected dashboard to see Google API usage and rotate the Google Maps key.
+
+| Control | What it does | Needs |
+| --- | --- | --- |
+| **App usage** | Daily count of Google calls this app makes (searches, place lookups, photos, errors), last 30 days | Redis (Upstash) |
+| **Google quota** | Request counts by day and response class, plus per-minute rate limits, reported by Google Cloud | A read-only service account |
+| **Rotate key** | Creates a new key (Places API only), **tests it**, writes it to Vercel and redeploys | Service account with key admin + a Vercel token and deploy hook |
+| **Revoke previous key** | Deletes the old key once the new deployment is live (Google keeps deleted keys 30 days) | Same as rotate |
+
+The dashboard works in tiers: with only `ADMIN_PASSWORD` + `ADMIN_SESSION_SECRET` (and Redis) you get sign-in and app usage; each control that still needs setup is shown disabled with the exact env vars it is missing.
+
+### Setup
+
+1. **Sign-in** (required): set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` (32+ characters), see `.env.example` for generators.
+2. **Google quota and rotation:** in the Google Cloud project that owns your Maps key:
+   - Enable **API Keys API**, **Service Usage API** and **Cloud Monitoring API**.
+   - Create a service account and grant it **API Keys Admin**, **Monitoring Viewer** and **Service Usage Viewer** (leave out API Keys Admin if you only want the quota view).
+   - Create a JSON key for it and set `GOOGLE_SERVICE_ACCOUNT_JSON` to the file contents, or its base64 (`base64 -i key.json`). The project defaults to the one inside the file; override with `GCP_PROJECT_ID`.
+3. **Rotation only:** in Vercel create an API token (scoped to your team) and a **Deploy Hook** (Project Settings, Git, Deploy Hooks, branch `main`), then set `VERCEL_API_TOKEN` and `VERCEL_DEPLOY_HOOK_URL`, plus `VERCEL_PROJECT_ID` (and `VERCEL_TEAM_ID` for team projects). Store all of these as **sensitive** env vars.
+
+### How rotation stays safe
+
+1. Notes which key is live, then creates a new key restricted to the Places API.
+2. Calls Google with the new key. If it doesn't work, it is deleted and **nothing else changes**.
+3. Writes it to Vercel (if that fails, the new key is deleted) and triggers a redeploy.
+4. The old key keeps serving traffic. **Revoke previous key** refuses to run while the server is still using the old key, so you can't cut off the live deployment.
+
+### Security notes
+
+The repo is public, so all protection comes from secrets in env vars: one password (compared in constant time, 5 attempts per minute per IP), an HMAC-signed `HttpOnly`, `SameSite=Strict` session cookie (8 hours), same-origin checks on every request, no caching, and `noindex`. Every admin action is written to an audit log shown on the dashboard. Google does not expose remaining free credit or spend through any API, so check **Billing, Reports** in the Cloud console for that.
+
 ## Palette (60-30-10)
 
 A scheme of three blues-and-orange hues, with tints and shades of each for the supporting detail. All tokens live in `src/app/globals.css`, with a warm-dark variant under `prefers-color-scheme: dark`.
@@ -68,3 +101,7 @@ A scheme of three blues-and-orange hues, with tints and shades of each for the s
 ## Scripts
 
 `pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm lint:grid` · `pnpm test`
+
+## License
+
+[MIT](LICENSE) © 2026 Ygam Retuta
