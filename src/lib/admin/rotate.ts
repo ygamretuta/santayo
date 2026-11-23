@@ -2,7 +2,7 @@
  * Key rotation, ordered so a failure can never leave the site without a working key:
  *
  *   1. note which key is live            (so it can be revoked later)
- *   2. create a new key, restricted to the Places API
+ *   2. create a new key, restricted to the Places and Routes APIs
  *   3. TEST the new key against Google   (abort + delete it if it doesn't work yet)
  *   4. write it to Vercel                (abort + delete it if that fails)
  *   5. trigger a redeploy
@@ -75,7 +75,7 @@ export async function rotateKey(d: RotateDeps): Promise<RotationResult> {
   } catch (e) {
     return fail("Create a new key", message(e));
   }
-  steps.push({ step: "Create a new key (Places API only)", ok: true });
+  steps.push({ step: "Create a new key (Places + Routes APIs)", ok: true });
   const discard = () => d.deleteKey(created.name).catch(() => {});
 
   // 3. Test it. New keys can take a few seconds to start working.

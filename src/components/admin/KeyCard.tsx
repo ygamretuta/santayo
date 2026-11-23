@@ -11,7 +11,7 @@ export function KeyCard({ masked, previous, rotate }: { masked: string; previous
       </dl>
       <RotateControls canRotate={rotate.ready} missing={rotate.missing} hasPrevious={Boolean(previous)} />
       <p className="admin-card__note">
-        Rotating creates a new key restricted to the Places API, tests it, installs it in Vercel and redeploys. The old key
+        Rotating creates a new key restricted to the Places and Routes APIs, tests it, installs it in Vercel and redeploys. The old key
         keeps serving traffic until the new deployment is live. Then revoke it here.
       </p>
     </AdminCard>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useCoords } from "@/hooks/useCoords";
 import { useRestaurantSearch } from "@/hooks/useRestaurantSearch";
+import { useWalking } from "@/hooks/useWalking";
 import { paginate } from "@/lib/paginate";
 import { accuracyIsPoor, formatAccuracy } from "@/lib/location";
 import { formatRadius, nextRadius } from "@/lib/radius";
@@ -31,6 +32,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
     [search, sort],
   );
   const pageData = useMemo(() => paginate(sorted, page), [sorted, page]);
+  const walks = useWalking(coords, pageData.items);
   const hrefFor = (n: number) =>
     `/results?q=${encodeURIComponent(q)}&r=${radius}${n > 1 ? `&page=${n}` : ""}`;
 
@@ -114,7 +116,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
         </Status>
       ) : (
         <>
-          <RestaurantList restaurants={pageData.items} grouped={grouped} counts={counts} />
+          <RestaurantList restaurants={pageData.items} grouped={grouped} counts={counts} walks={walks} />
           <Pagination page={pageData} hrefFor={hrefFor} />
         </>
       )}

@@ -20,6 +20,7 @@ const KEYS_API = "https://apikeys.googleapis.com/v2";
 const MONITORING_API = "https://monitoring.googleapis.com/v3";
 const SERVICE_USAGE_API = "https://serviceusage.googleapis.com/v1beta1";
 const PLACES_SERVICE = "places.googleapis.com";
+const ROUTES_SERVICE = "routes.googleapis.com";
 
 export class GcpError extends Error {
   constructor(public status: number, message: string) {
@@ -163,7 +164,7 @@ export async function getKeyString(f: Fetch, token: string, name: string): Promi
   return keyString;
 }
 
-/** New key restricted to the Places API only. */
+/** New key restricted to the APIs the app uses: Places (search, details, photos) and Routes (walking times). */
 export async function createKey(
   f: Fetch,
   token: string,
@@ -173,7 +174,7 @@ export async function createKey(
 ): Promise<{ name: string; keyString: string }> {
   const op = await call<Operation>(f, token, `${KEYS_API}/projects/${projectId}/locations/global/keys`, {
     method: "POST",
-    body: JSON.stringify({ displayName, restrictions: { apiTargets: [{ service: PLACES_SERVICE }] } }),
+    body: JSON.stringify({ displayName, restrictions: { apiTargets: [{ service: PLACES_SERVICE }, { service: ROUTES_SERVICE }] } }),
   });
   const done = await waitForOperation(f, token, op, opts);
   const name = done.response?.name;

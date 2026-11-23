@@ -73,7 +73,7 @@ describe("JWT + access token", () => {
 
 describe("API keys", () => {
   const KEYS = "https://apikeys.googleapis.com/v2";
-  it("creates a Places-restricted key, waits for the operation, then reads the key string", async () => {
+  it("creates a key restricted to Places + Routes, waits for the operation, then reads the key string", async () => {
     let polls = 0;
     const { f, calls } = fakeFetch({
       [`POST ${KEYS}/projects/proj/locations/global/keys`]: () => json({ name: "operations/op1", done: false }),
@@ -82,7 +82,7 @@ describe("API keys", () => {
     });
     expect(await createKey(f, "t", "proj", "santayo-x", noSleep)).toEqual({ name: "projects/1/locations/global/keys/k1", keyString: "AIzaNEW" });
     const create = JSON.parse(calls[0].body!);
-    expect(create.restrictions.apiTargets).toEqual([{ service: "places.googleapis.com" }]);
+    expect(create.restrictions.apiTargets).toEqual([{ service: "places.googleapis.com" }, { service: "routes.googleapis.com" }]);
     expect(create.displayName).toBe("santayo-x");
     expect(polls).toBe(2);
   });

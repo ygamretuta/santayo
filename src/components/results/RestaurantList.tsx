@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import type { Match, Restaurant } from "@/lib/types";
+import type { Walk } from "@/lib/walking";
 import { RestaurantCard } from "./RestaurantCard";
 import "./restaurant-list.css";
 
@@ -15,9 +16,11 @@ interface Props {
   grouped?: boolean;
   /** Size of each group across ALL pages, for the heading counts. */
   counts?: Record<Match, number>;
+  /** Real walking times by place id; others are estimated. */
+  walks?: Record<string, Walk>;
 }
 
-export function RestaurantList({ restaurants, grouped, counts }: Props) {
+export function RestaurantList({ restaurants, grouped, counts, walks }: Props) {
   return (
     <ul className="restaurant-list">
       {restaurants.map((r, i) => {
@@ -35,7 +38,7 @@ export function RestaurantList({ restaurants, grouped, counts }: Props) {
               </li>
             )}
             <li className="restaurant-list__item">
-              <RestaurantCard r={r} />
+              <RestaurantCard r={r} walk={walks?.[r.id]} />
             </li>
           </Fragment>
         );

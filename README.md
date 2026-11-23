@@ -19,6 +19,13 @@ pnpm dev
 
 Average price comes from Google's `priceRange` (midpoint); when a place only has a coarse price level it shows `$`–`$$$$` instead.
 
+## Accuracy: matching, location and walking time
+
+- **Matching.** Google's text search returns its best guesses up to a page, however weak, and most local places are only tagged plain "restaurant". So every result is scored (`lib/places/relevance.ts`) from its name, its Google category, and a dictionary of cuisines and local chains (Jollibee, Shakey's, Army Navy...), then grouped as **Best matches / Related places / Also nearby**. Grouping only appears when at least one result is a strong match. No provider has dish-level menu data for most places, so this ranks by evidence; it can't promise a dish is served.
+- **Search query.** The query is sent as typed, without a forced "restaurant" type, which used to hide most coffee shops and bakeries. Non-food places are dropped by Google type instead.
+- **Your location.** The app asks for a precise fix, shows its accuracy (`Near you (±40 m)`) and warns when it is worse than 20% of the search radius. A GPS fix older than 10 minutes is refreshed when the page loads or the tab comes back. Coordinates are sent at about 11 m precision. **Change location** lets you search a street, landmark or area (Google Places, biased to where you are), or tap *Use my current location*. Picking a whole city warns that distances are measured from its middle.
+- **Walking time.** Each card shows `🚶 6 min`. With the **Routes API enabled** these are real walking routes from Google, fetched once per page of results and cached for a day per spot and place. Without it they are estimates shown with a tilde (`~6 min`: straight-line distance x 1.35 / 80 m a minute). To switch on real routes, enable **Routes API** in your Google Cloud project; if your key has API restrictions, add Routes API to them (keys created by the admin's rotation already include it). Routes are billed per origin-destination element; the admin dashboard shows the count.
+
 ## Menus
 
 Google's Places API has no menu data, so `lib/menu.ts` looks for one on the restaurant's own website (a "Menu" link, a `/menu` page, or a menu PDF/image). The detail page shows **View menu** only when one is found, and opens it in a dialog. Sites that forbid framing get an "Open menu" link inside the dialog instead. Coverage depends on the restaurant having a real website: places with no website, or only a Facebook/Instagram page, get no menu button. Fetching is server-side, time-boxed, restricted to public http(s) hosts, and results are cached for a day.
@@ -54,7 +61,7 @@ Each component sits next to its BEM stylesheet, and tests sit next to the code t
 | --- | --- | --- |
 | **App usage** | Daily count of Google calls this app makes (searches, place lookups, photos, errors), last 30 days | Redis (Upstash) |
 | **Google quota** | Request counts by day and response class, plus per-minute rate limits, reported by Google Cloud | A read-only service account |
-| **Rotate key** | Creates a new key (Places API only), **tests it**, writes it to Vercel and redeploys | Service account with key admin + a Vercel token and deploy hook |
+| **Rotate key** | Creates a new key (Places + Routes APIs only), **tests it**, writes it to Vercel and redeploys | Service account with key admin + a Vercel token and deploy hook |
 | **Revoke previous key** | Deletes the old key once the new deployment is live (Google keeps deleted keys 30 days) | Same as rotate |
 
 The dashboard works in tiers: with only `ADMIN_PASSWORD` + `ADMIN_SESSION_SECRET` (and Redis) you get sign-in and app usage; each control that still needs setup is shown disabled with the exact env vars it is missing.
@@ -70,7 +77,7 @@ The dashboard works in tiers: with only `ADMIN_PASSWORD` + `ADMIN_SESSION_SECRET
 
 ### How rotation stays safe
 
-1. Notes which key is live, then creates a new key restricted to the Places API.
+1. Notes which key is live, then creates a new key restricted to the Places and Routes APIs.
 2. Calls Google with the new key. If it doesn't work, it is deleted and **nothing else changes**.
 3. Writes it to Vercel (if that fails, the new key is deleted) and triggers a redeploy.
 4. The old key keeps serving traffic. **Revoke previous key** refuses to run while the server is still using the old key, so you can't cut off the live deployment.
