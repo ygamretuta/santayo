@@ -10,18 +10,20 @@ interface Props {
   radius: number;
   /** Where results are centred, e.g. "Baguio City"; falls back to "you". */
   placeLabel?: string;
+  /** e.g. "±40 m", shown after "Near you" for a GPS fix. */
+  accuracyLabel?: string;
   sort: Sort;
   onSortChange: (sort: Sort) => void;
   onChangeLocation: () => void;
 }
 
 /** Radius chips, "change location" and the sort dropdown. */
-export function ResultsToolbar({ q, radius, placeLabel, sort, onSortChange, onChangeLocation }: Props) {
+export function ResultsToolbar({ q, radius, placeLabel, accuracyLabel, sort, onSortChange, onChangeLocation }: Props) {
   return (
     <div className="results-toolbar">
       <div className="results-toolbar__filters">
         <span className="results-toolbar__label">
-          {placeLabel ? `Near ${placeLabel}` : "Near you"} · within
+          {placeLabel ? `Near ${placeLabel}` : accuracyLabel ? `Near you (${accuracyLabel})` : "Near you"} · within
         </span>
         {RADII_KM.map((km) => (
           <Link

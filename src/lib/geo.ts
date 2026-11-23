@@ -41,5 +41,5 @@ export function offsetPoint(
 }
 
 export function formatDistance(km: number): string {
-  return km < 1 ? `${Math.round(km * 10) * 100} m` : `${km.toFixed(1)} km`;
+  return km < 1 ? `${Math.round(km * 100) * 10} m` : `${km.toFixed(1)} km`;
 }

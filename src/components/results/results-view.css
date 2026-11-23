@@ -9,6 +9,19 @@
   font-size: 14px;
 }
 
+.results-view__notice-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.results-view__notice-button:disabled {
+  opacity: 0.6;
+}
+
 .results-view__retry {
   color: var(--color-accent-text);
   text-decoration: underline;

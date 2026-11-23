@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { clearCoords, useCoords } from "@/hooks/useCoords";
 import { useRestaurantSearch } from "@/hooks/useRestaurantSearch";
 import { paginate } from "@/lib/paginate";
+import { accuracyIsPoor, formatAccuracy } from "@/lib/location";
 import { formatRadius, nextRadius } from "@/lib/radius";
 import { sortRestaurants, type Sort } from "@/lib/sort";
 import type { Match } from "@/lib/types";
@@ -19,7 +20,7 @@ import "./results-view.css";
 /** Search results for a term: locates the visitor, fetches, sorts and paginates. */
 export function ResultsView({ q, radius, page }: { q: string; radius: number; page: number }) {
   const router = useRouter();
-  const { coords, denied } = useCoords();
+  const { coords, denied, locating, refresh } = useCoords();
   const search = useRestaurantSearch(q, radius, coords);
   const [sort, setSort] = useState<Sort>("best");
 
@@ -51,6 +52,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
         q={q}
         radius={radius}
         placeLabel={coords.label}
+        accuracyLabel={coords.accuracy !== undefined ? formatAccuracy(coords.accuracy) : undefined}
         sort={sort}
         onSortChange={(next) => {
           setSort(next);
@@ -58,6 +60,15 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
         }}
         onChangeLocation={clearCoords}
       />
+
+      {coords.source === "gps" && accuracyIsPoor(coords.accuracy, radius) && (
+        <p className="results-view__notice" role="status">
+          Your location is only accurate to about {formatAccuracy(coords.accuracy!)}, so distances may be off.{" "}
+          <button type="button" className="results-view__notice-button" disabled={locating} onClick={refresh}>
+            {locating ? "Locating…" : "Try again"}
+          </button>
+        </p>
+      )}
 
       {search && "source" in search && search.source === "demo" && (
         <p className="results-view__notice">

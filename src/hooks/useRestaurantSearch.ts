@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { DataSource, Restaurant } from "@/lib/types";
+import { roundCoord } from "@/lib/location";
 import type { Coords } from "./useCoords";
 
 export type SearchState =
@@ -17,9 +18,9 @@ type Loaded = { key: string } & SearchState;
 export function useRestaurantSearch(q: string, radius: number, coords: Coords | null): SearchState | null {
   const [loaded, setLoaded] = useState<Loaded | null>(null);
 
-  // Coordinates are rounded (~110 m) before leaving the device.
-  const lat = coords ? Math.round(coords.lat * 1000) / 1000 : null;
-  const lng = coords ? Math.round(coords.lng * 1000) / 1000 : null;
+  // Rounded to ~11 m before leaving the device. (110 m was up to 15% of a 500 m radius.)
+  const lat = coords ? roundCoord(coords.lat) : null;
+  const lng = coords ? roundCoord(coords.lng) : null;
   const key = lat != null && lng != null ? `${q}|${radius}|${lat}|${lng}` : null;
 
   useEffect(() => {
