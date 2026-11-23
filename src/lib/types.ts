@@ -17,6 +17,9 @@ export interface Review {
   text: string;
 }
 
+/** How well a result fits the search: see lib/places/relevance.ts. */
+export type Match = "strong" | "related" | "none";
+
 export interface Restaurant {
   id: string;
   name: string;
@@ -36,6 +39,10 @@ export interface Restaurant {
   distanceKm?: number;
   /** Other branches of the same chain hidden from search results. */
   otherBranches?: number;
+  /** Fit to the search; set on search results. */
+  match?: Match;
+  /** Google place types; used on the server for scoring, stripped before sending. */
+  types?: string[];
   openNow?: boolean;
   hours?: string[];
   phone?: string;

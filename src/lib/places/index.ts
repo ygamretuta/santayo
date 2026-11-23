@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import type { Restaurant, SearchResult } from "../types";
 import { dedupeRestaurants } from "./dedupe";
 import { demoRestaurant, demoSearch, isDemoId } from "./demo";
+import { rankByMatch, scoreMatch } from "./relevance";
 import { googleDetails, googleKey, googleSearch } from "./google";
 
 export const usingGoogle = () => Boolean(googleKey());
@@ -13,7 +14,10 @@ export async function searchRestaurants(
   radiusKm: number,
 ): Promise<SearchResult> {
   if (usingGoogle()) {
-    return { source: "google", restaurants: dedupeRestaurants(await googleSearch(query, origin, radiusKm)) };
+    const found = dedupeRestaurants(await googleSearch(query, origin, radiusKm));
+    // Score, order best-fit first, and drop the raw types (server-side only).
+    const scored = found.map(({ types, ...r }) => ({ ...r, match: scoreMatch({ name: r.name, types }, query) }));
+    return { source: "google", restaurants: rankByMatch(scored) };
   }
   return { source: "demo", restaurants: demoSearch(query, origin, radiusKm) };
 }

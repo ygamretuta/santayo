@@ -8,6 +8,7 @@ import { useRestaurantSearch } from "@/hooks/useRestaurantSearch";
 import { paginate } from "@/lib/paginate";
 import { formatRadius, nextRadius } from "@/lib/radius";
 import { sortRestaurants, type Sort } from "@/lib/sort";
+import type { Match } from "@/lib/types";
 import { Status } from "../ui/Status";
 import { LocationFallback } from "./LocationFallback";
 import { Pagination } from "./Pagination";
@@ -29,6 +30,14 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
   const pageData = useMemo(() => paginate(sorted, page), [sorted, page]);
   const hrefFor = (n: number) =>
     `/results?q=${encodeURIComponent(q)}&r=${radius}${n > 1 ? `&page=${n}` : ""}`;
+
+  // Group by fit-to-search only in the default order, and only if something actually fits.
+  const counts = useMemo(() => {
+    const c: Record<Match, number> = { strong: 0, related: 0, none: 0 };
+    sorted.forEach((r) => (c[r.match ?? "none"] += 1));
+    return c;
+  }, [sorted]);
+  const grouped = sort === "best" && counts.strong > 0 && counts.strong < sorted.length;
 
   const wider = nextRadius(radius);
 
@@ -72,7 +81,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
         </Status>
       ) : (
         <>
-          <RestaurantList restaurants={pageData.items} />
+          <RestaurantList restaurants={pageData.items} grouped={grouped} counts={counts} />
           <Pagination page={pageData} hrefFor={hrefFor} />
         </>
       )}

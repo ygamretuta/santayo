@@ -1,6 +1,7 @@
 import { trackGoogleCall } from "../admin/usage";
 import { averageOfRange } from "../price";
 import { boundingBox, haversineKm } from "../geo";
+import { isFoodPlace } from "./food";
 import type { PriceLevel, Restaurant, Review } from "../types";
 
 const BASE = "https://places.googleapis.com/v1";
@@ -36,6 +37,7 @@ function mapPlace(p: any, origin?: { lat: number; lng: number }): Restaurant {
     },
     photos: (p.photos ?? []).slice(0, 8).map((ph: any) => ph.name as string),
     category: p.primaryTypeDisplayName?.text,
+    types: p.types,
     summary: p.editorialSummary?.text,
     address: p.formattedAddress,
     area: locality,
@@ -75,6 +77,7 @@ const SEARCH_FIELDS = [
   "places.formattedAddress",
   "places.location",
   "places.primaryTypeDisplayName",
+  "places.types",
   "places.currentOpeningHours.openNow",
 ].join(",");
 
@@ -113,9 +116,9 @@ export async function googleSearch(
       "X-Goog-FieldMask": SEARCH_FIELDS,
     },
     body: JSON.stringify({
-      textQuery: `${query} restaurant`,
-      includedType: "restaurant",
-      strictTypeFiltering: true,
+      // Plain query, no forced "restaurant": that hid most coffee shops, bakeries and dessert places.
+      // Non-food results are dropped below instead.
+      textQuery: query,
       pageSize: 20,
       languageCode: "en",
       // Text search only restricts to rectangles; we trim to the circle below.
@@ -129,7 +132,8 @@ export async function googleSearch(
 
   return (data.places ?? [])
     .map((p: unknown) => mapPlace(p, origin))
-    .filter((r: Restaurant) => r.distanceKm == null || r.distanceKm <= radiusKm);
+    .filter((r: Restaurant) => r.distanceKm == null || r.distanceKm <= radiusKm)
+    .filter((r: Restaurant) => isFoodPlace(r.types));
 }
 
 export async function googleDetails(id: string): Promise<Restaurant | null> {
