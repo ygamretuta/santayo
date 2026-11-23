@@ -26,6 +26,8 @@ export function UsageCard({ usage }: { usage: UsageSummary | null }) {
           <tr><th scope="row">Searches</th><td>{n(last30.search)}</td></tr>
           <tr><th scope="row">Place details</th><td>{n(last30.details)}</td></tr>
           <tr><th scope="row">Photos</th><td>{n(last30.photo)}</td></tr>
+          <tr><th scope="row">Location lookups</th><td>{n(last30.locate)}</td></tr>
+          <tr><th scope="row">Walking routes (billed per route)</th><td>{n(last30.route)}</td></tr>
           <tr><th scope="row">Errors</th><td>{n(last30.errors)}</td></tr>
         </tbody>
       </table>

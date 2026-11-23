@@ -2,6 +2,7 @@ import { trackGoogleCall } from "../admin/usage";
 import { averageOfRange } from "../price";
 import { boundingBox, haversineKm } from "../geo";
 import { isFoodPlace } from "./food";
+import { toChoice, type PlaceChoice } from "./locate";
 import type { PriceLevel, Restaurant, Review } from "../types";
 
 const BASE = "https://places.googleapis.com/v1";
@@ -159,4 +160,27 @@ export async function googlePhoto(name: string, width: number): Promise<Response
   const res = await fetch(`${BASE}/${name}/media?maxWidthPx=${width}&key=${googleKey()}`, { cache: "no-store" });
   trackGoogleCall("photo", res.ok);
   return res;
+}
+
+/** Finds streets, landmarks and areas by name, biased toward `near` so "Session Road" means the local one. */
+export async function googleLocate(query: string, near?: { lat: number; lng: number }): Promise<PlaceChoice[]> {
+  const res = await fetch(`${BASE}/places:searchText`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": googleKey()!,
+      "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.location,places.types",
+    },
+    body: JSON.stringify({
+      textQuery: query,
+      pageSize: 5,
+      languageCode: "en",
+      ...(near && { locationBias: { circle: { center: { latitude: near.lat, longitude: near.lng }, radius: 50_000 } } }),
+    }),
+    cache: "no-store",
+  });
+  trackGoogleCall("locate", res.ok);
+  if (!res.ok) throw new Error(`Place lookup failed (${res.status})`);
+  const data = await res.json();
+  return (data.places ?? []).map(toChoice).filter((c: PlaceChoice | null): c is PlaceChoice => c !== null);
 }

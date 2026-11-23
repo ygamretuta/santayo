@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { clearCoords, useCoords } from "@/hooks/useCoords";
+import { useCoords } from "@/hooks/useCoords";
 import { useRestaurantSearch } from "@/hooks/useRestaurantSearch";
 import { paginate } from "@/lib/paginate";
 import { accuracyIsPoor, formatAccuracy } from "@/lib/location";
@@ -12,6 +12,7 @@ import { sortRestaurants, type Sort } from "@/lib/sort";
 import type { Match } from "@/lib/types";
 import { Status } from "../ui/Status";
 import { LocationFallback } from "./LocationFallback";
+import { LocationPicker } from "./LocationPicker";
 import { Pagination } from "./Pagination";
 import { RestaurantList } from "./RestaurantList";
 import { ResultsToolbar } from "./ResultsToolbar";
@@ -23,6 +24,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
   const { coords, denied, locating, refresh } = useCoords();
   const search = useRestaurantSearch(q, radius, coords);
   const [sort, setSort] = useState<Sort>("best");
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const sorted = useMemo(
     () => (search && "restaurants" in search ? sortRestaurants(search.restaurants, sort) : []),
@@ -43,7 +45,7 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
   const wider = nextRadius(radius);
 
   if (!coords) {
-    return denied ? <LocationFallback /> : <Status>📍 Finding where you are…</Status>;
+    return denied ? <LocationFallback onUseMyLocation={refresh} locating={locating} /> : <Status>📍 Finding where you are…</Status>;
   }
 
   return (
@@ -58,15 +60,35 @@ export function ResultsView({ q, radius, page }: { q: string; radius: number; pa
           setSort(next);
           if (page > 1) router.replace(hrefFor(1));
         }}
-        onChangeLocation={clearCoords}
+        onChangeLocation={() => setPickerOpen((open) => !open)}
       />
+
+      {pickerOpen && (
+        <div className="results-view__picker">
+          <LocationPicker near={coords} onUseMyLocation={refresh} locating={locating} onPicked={() => setPickerOpen(false)} />
+        </div>
+      )}
+
+      {coords.broad && !pickerOpen && (
+        <p className="results-view__notice" role="status">
+          Distances are measured from the middle of {coords.label}.{" "}
+          <button type="button" className="results-view__notice-button" onClick={() => setPickerOpen(true)}>
+            Pick a street or landmark
+          </button>{" "}
+          for better results.
+        </p>
+      )}
 
       {coords.source === "gps" && accuracyIsPoor(coords.accuracy, radius) && (
         <p className="results-view__notice" role="status">
           Your location is only accurate to about {formatAccuracy(coords.accuracy!)}, so distances may be off.{" "}
           <button type="button" className="results-view__notice-button" disabled={locating} onClick={refresh}>
             {locating ? "Locating…" : "Try again"}
-          </button>
+          </button>{" "}
+          or{" "}
+          <button type="button" className="results-view__notice-button" onClick={() => setPickerOpen(true)}>
+            pick where you are
+          </button>.
         </p>
       )}
 

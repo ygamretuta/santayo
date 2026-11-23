@@ -8,20 +8,21 @@ import { redis } from "../redis";
  * search and photo calls are uncached, so those counts are exact.
  */
 
-export type GoogleCall = "search" | "details" | "photo";
-export const CALL_KINDS: GoogleCall[] = ["search", "details", "photo"];
+export type GoogleCall = "search" | "details" | "photo" | "locate" | "route";
+export const CALL_KINDS: GoogleCall[] = ["search", "details", "photo", "locate", "route"];
 
 const RETENTION_DAYS = 100;
 
 export const dayKey = (d = new Date()) => `santayo:usage:${d.toISOString().slice(0, 10)}`;
 
 /** Fire-and-forget: runs after the response, and never throws into the caller. */
-export function trackGoogleCall(kind: GoogleCall, ok: boolean) {
+/** `count` is 1 per request, except walking routes, which are billed per origin-destination element. */
+export function trackGoogleCall(kind: GoogleCall, ok: boolean, count = 1) {
   if (!redis) return;
   const write = async () => {
     const key = dayKey(); // computed here, after the response, never during render
     try {
-      const p = redis!.pipeline().hincrby(key, kind, 1);
+      const p = redis!.pipeline().hincrby(key, kind, count);
       if (!ok) p.hincrby(key, `${kind}_error`, 1);
       await p.expire(key, RETENTION_DAYS * 86400).exec();
     } catch {
@@ -40,6 +41,8 @@ export interface DayUsage {
   search: number;
   details: number;
   photo: number;
+  locate: number;
+  route: number;
   errors: number;
   total: number;
 }
@@ -58,13 +61,17 @@ export function toDayUsage(date: string, hash: Record<string, unknown> | null): 
   const search = num(h.search);
   const details = num(h.details);
   const photo = num(h.photo);
+  const locate = num(h.locate);
+  const route = num(h.route);
   return {
     date,
     search,
     details,
     photo,
-    errors: num(h.search_error) + num(h.details_error) + num(h.photo_error),
-    total: search + details + photo,
+    locate,
+    route,
+    errors: CALL_KINDS.reduce((n, k) => n + num(h[`${k}_error`]), 0),
+    total: search + details + photo + locate + route,
   };
 }
 
@@ -74,10 +81,12 @@ function sum(days: DayUsage[]): Omit<DayUsage, "date"> {
       search: a.search + d.search,
       details: a.details + d.details,
       photo: a.photo + d.photo,
+      locate: a.locate + d.locate,
+      route: a.route + d.route,
       errors: a.errors + d.errors,
       total: a.total + d.total,
     }),
-    { search: 0, details: 0, photo: 0, errors: 0, total: 0 },
+    { search: 0, details: 0, photo: 0, locate: 0, route: 0, errors: 0, total: 0 },
   );
 }
 

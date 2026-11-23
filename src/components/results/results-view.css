@@ -9,6 +9,14 @@
   font-size: 14px;
 }
 
+.results-view__picker {
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+  background: var(--color-surface);
+}
+
 .results-view__notice-button {
   padding: 0;
   border: 0;

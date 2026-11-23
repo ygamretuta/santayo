@@ -4,7 +4,8 @@ import type { Restaurant, SearchResult } from "../types";
 import { dedupeRestaurants } from "./dedupe";
 import { demoRestaurant, demoSearch, isDemoId } from "./demo";
 import { rankByMatch, scoreMatch } from "./relevance";
-import { googleDetails, googleKey, googleSearch } from "./google";
+import { googleDetails, googleKey, googleLocate, googleSearch } from "./google";
+import { toChoiceFromGeocoder, type PlaceChoice } from "./locate";
 
 export const usingGoogle = () => Boolean(googleKey());
 
@@ -30,3 +31,15 @@ export const getRestaurant = cache(async (id: string): Promise<Restaurant | null
   if (!usingGoogle()) return null;
   return googleDetails(id);
 });
+
+/** Up to five places matching what the visitor typed. Google when configured, else Open-Meteo (cities only). */
+export async function locatePlaces(query: string, near?: { lat: number; lng: number }): Promise<PlaceChoice[]> {
+  if (usingGoogle()) return googleLocate(query, near);
+  const res = await fetch(
+    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=en&format=json`,
+    { next: { revalidate: 86400 } },
+  );
+  if (!res.ok) throw new Error(`Geocoder failed (${res.status})`);
+  const data = await res.json();
+  return (data.results ?? []).map(toChoiceFromGeocoder).filter((c: PlaceChoice | null): c is PlaceChoice => c !== null);
+}

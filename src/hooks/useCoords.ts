@@ -44,12 +44,9 @@ export function saveCoords(c: Coords) {
   listeners.forEach((l) => l());
 }
 
-export function clearCoords() {
-  memory = null;
-  try {
-    sessionStorage.removeItem(STORAGE_KEY);
-  } catch {}
-  listeners.forEach((l) => l());
+/** Saves a place the visitor chose ("I'm at Session Road") as the point distances are measured from. */
+export function savePickedPlace(c: { lat: number; lng: number; label: string; broad: boolean }) {
+  saveCoords({ lat: c.lat, lng: c.lng, label: c.label, broad: c.broad, source: "picked", at: Date.now() });
 }
 
 const parseCoords = (raw: string | null): Coords | null => {

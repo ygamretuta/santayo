@@ -10,9 +10,9 @@ describe("usage", () => {
     expect(lastDates(3, new Date("2026-11-01T10:00:00Z"))).toEqual(["2026-10-30", "2026-10-31", "2026-11-01"]);
   });
   it("reads a redis hash, tolerating missing fields and string numbers", () => {
-    expect(toDayUsage("d", null)).toEqual({ date: "d", search: 0, details: 0, photo: 0, errors: 0, total: 0 });
-    expect(toDayUsage("d", { search: 3, details: "2", photo: 5, search_error: 1, photo_error: "2" })).toEqual({
-      date: "d", search: 3, details: 2, photo: 5, errors: 3, total: 10,
+    expect(toDayUsage("d", null)).toEqual({ date: "d", search: 0, details: 0, photo: 0, locate: 0, route: 0, errors: 0, total: 0 });
+    expect(toDayUsage("d", { search: 3, details: "2", photo: 5, locate: 1, route: 10, search_error: 1, photo_error: "2", route_error: 1 })).toEqual({
+      date: "d", search: 3, details: 2, photo: 5, locate: 1, route: 10, errors: 4, total: 21,
     });
   });
   it("summarises today / 7 / 30 days", () => {
