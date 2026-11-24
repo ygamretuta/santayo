@@ -34,7 +34,8 @@
 }
 
 .restaurant-card__name,
-.restaurant-card__meta {
+.restaurant-card__meta,
+.restaurant-card__walk {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -48,6 +49,12 @@
 .restaurant-card__meta {
   color: var(--color-muted);
   font-size: 14px;
+}
+
+.restaurant-card__walk {
+  color: var(--color-text-soft);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .restaurant-card__footer {

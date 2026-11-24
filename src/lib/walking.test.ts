@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { estimateWalk, formatWalkTime, parseDurationSeconds, parseRouteMatrix } from "./walking";
+import { estimateWalk, formatWalkTime, isDetour, parseDurationSeconds, parseRouteMatrix } from "./walking";
 
 describe("estimateWalk", () => {
-  it("adds 35% for winding streets and walks at 80 m a minute", () => {
-    expect(estimateWalk(0.3)).toEqual({ minutes: 5, meters: 405, estimate: true });
-    expect(estimateWalk(1)).toEqual({ minutes: 17, meters: 1350, estimate: true });
+  it("adds 40% for winding streets and walks at 65 m a minute (fitted to real Baguio routes)", () => {
+    expect(estimateWalk(0.3)).toEqual({ minutes: 6, meters: 420, estimate: true });
+    expect(estimateWalk(1)).toEqual({ minutes: 22, meters: 1400, estimate: true });
+  });
+  it("is close on average to what Google measured, though a detouring route can be well off", () => {
+    // Real samples from Session Road: [straight m, Google minutes]. The 481 m one is an 819 m walk (hills).
+    const samples: [number, number][] = [[222, 5], [266, 7], [295, 8], [481, 14]];
+    const errors = samples.map(([m, google]) => Math.abs(estimateWalk(m / 1000).minutes - google));
+    expect(errors.reduce((a, b) => a + b, 0) / errors.length).toBeLessThan(2.5);
+    expect(Math.max(...errors)).toBeLessThanOrEqual(4);
   });
   it("never says 0 minutes", () => {
     expect(estimateWalk(0.01).minutes).toBe(1);
@@ -20,6 +27,23 @@ describe("formatWalkTime", () => {
   it("switches to hours past 60 minutes", () => {
     expect(formatWalkTime({ minutes: 65, meters: 5000, estimate: false })).toBe("1 h 5 min");
     expect(formatWalkTime({ minutes: 120, meters: 9000, estimate: false })).toBe("2 h");
+  });
+});
+
+describe("isDetour", () => {
+  const real = (meters: number) => ({ minutes: 10, meters, estimate: false });
+  it("flags a walk much longer than the straight line, like a 430 m place that is an 863 m walk", () => {
+    expect(isDetour(real(863), 0.43)).toBe(true);
+    expect(isDetour(real(570), 0.283)).toBe(true);
+  });
+  it("leaves ordinary routes alone", () => {
+    expect(isDetour(real(313), 0.222)).toBe(false); // 1.4x
+    expect(isDetour(real(437), 0.295)).toBe(false); // 1.5x
+  });
+  it("ignores tiny absolute differences, estimates and unknown distances", () => {
+    expect(isDetour(real(150), 0.08)).toBe(false); // 1.9x but only 70 m more
+    expect(isDetour({ minutes: 5, meters: 900, estimate: true }, 0.4)).toBe(false);
+    expect(isDetour(real(900), undefined)).toBe(false);
   });
 });
 

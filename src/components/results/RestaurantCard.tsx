@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { formatDistance } from "@/lib/geo";
 import { formatPrice } from "@/lib/price";
-import { estimateWalk, formatWalkTime, type Walk } from "@/lib/walking";
+import { estimateWalk, formatWalkTime, isDetour, type Walk } from "@/lib/walking";
 import type { Restaurant } from "@/lib/types";
 import { Stars } from "../ui/Stars";
 import { Thumb } from "../ui/Thumb";
@@ -23,19 +23,24 @@ export function RestaurantCard({ r, walk }: { r: Restaurant; walk?: Walk }) {
       <div className="restaurant-card__body">
         <div>
           <h3 className="restaurant-card__name">{r.name}</h3>
-          <p
-            className="restaurant-card__meta"
-            title={walk ? `Walking route: ${walk.meters} m` : walking ? "Estimated from the straight-line distance" : undefined}
-          >
+          <p className="restaurant-card__meta">
             {[
               r.category,
               r.distanceKm != null && formatDistance(r.distanceKm),
-              walking && `🚶 ${formatWalkTime(walking)}`,
               r.otherBranches ? `+${r.otherBranches} other branch${r.otherBranches > 1 ? "es" : ""}` : null,
             ]
               .filter(Boolean)
               .join(" · ")}
           </p>
+          {walking && (
+            <p
+              className="restaurant-card__walk"
+              title={walk ? `Walking route: ${walk.meters} m` : "Estimated from the straight-line distance"}
+            >
+              🚶 {formatWalkTime(walking)}
+              {walk && isDetour(walk, r.distanceKm) && ` (${formatDistance(walk.meters / 1000)} route)`}
+            </p>
+          )}
         </div>
         <div className="restaurant-card__footer">
           <Stars rating={r.rating} count={r.reviewCount} />
